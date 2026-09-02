@@ -385,3 +385,146 @@ tr:hover td { background: #f8fafc; }
   .accreditation-item { border-right: none !important; border-bottom: 1px solid var(--color-border-light); padding-bottom: 1rem !important; }
   .accreditation-item:last-child { border-bottom: none; }
 }
+
+/* ── Official Institutional Preloader Overlay ── */
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at center, #0f2d4a 0%, #061526 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.45s;
+}
+.preloader-overlay.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  display: none !important;
+}
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  max-width: 520px;
+  width: 100%;
+}
+.preloader-spinner-wrap {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.preloader-ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(245, 158, 11, 0.15);
+  border-top-color: var(--color-gold);
+  border-right-color: var(--color-gold);
+  animation: spin 1.2s linear infinite;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+.preloader-ring-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom-color: #60a5fa;
+  animation: spin-reverse 0.9s linear infinite;
+}
+.preloader-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+  padding: 6px;
+}
+.preloader-emblem {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.preloader-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.35rem 0;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.preloader-subtitle {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #93c5fd;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.75rem;
+}
+.preloader-mandate {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+.preloader-progress-wrap {
+  width: 100%;
+  max-width: 260px;
+}
+.preloader-bar {
+  height: 4px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.6rem;
+}
+.preloader-progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #d97706, #fbbf24, #f59e0b);
+  border-radius: 4px;
+  animation: preloaderProgress 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.preloader-status {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+@keyframes preloaderProgress {
+  0% { width: 0%; }
+  60% { width: 75%; }
+  100% { width: 100%; }
+}

@@ -23,6 +23,48 @@
 </head>
 <body>
 
+  <!-- Official Institutional Loading Screen -->
+  <div id="preloader" class="preloader-overlay" onclick="this.style.display='none';">
+    <div class="preloader-content">
+      <div class="preloader-spinner-wrap">
+        <div class="preloader-ring-outer"></div>
+        <div class="preloader-ring-inner"></div>
+        <div class="preloader-badge">
+          <img src="{% static 'images/logos/IIC IEM Kolkata.png' %}" alt="IIC IEM Emblem" class="preloader-emblem">
+        </div>
+      </div>
+      <div class="preloader-title-wrap">
+        <h2 class="preloader-title">INSTITUTION'S INNOVATION COUNCIL</h2>
+        <div class="preloader-subtitle">INSTITUTE OF ENGINEERING & MANAGEMENT (IEM) & UEM</div>
+        <div class="preloader-mandate"><i class="fas fa-certificate"></i> Ministry of Education's Innovation Cell (MIC), Govt. of India</div>
+      </div>
+      <div class="preloader-progress-wrap">
+        <div class="preloader-bar"><div class="preloader-progress"></div></div>
+        <span class="preloader-status">Initializing Institutional Portal...</span>
+      </div>
+    </div>
+    <script>
+      (function() {
+        function removePreloader() {
+          var p = document.getElementById('preloader');
+          if (p) {
+            p.style.opacity = '0';
+            p.style.visibility = 'hidden';
+            p.style.pointerEvents = 'none';
+            setTimeout(function() { p.style.display = 'none'; }, 400);
+          }
+        }
+        if (document.readyState === 'complete') {
+          setTimeout(removePreloader, 200);
+        } else {
+          window.addEventListener('load', function() { setTimeout(removePreloader, 200); });
+          document.addEventListener('DOMContentLoaded', function() { setTimeout(removePreloader, 400); });
+          setTimeout(removePreloader, 800);
+        }
+      })();
+    </script>
+  </div>
+
   <!-- Top Bar (Official Institutional Portal Strip) -->
   <div class="top-bar">
     <div class="container top-bar-inner">

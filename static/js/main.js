@@ -1,5 +1,19 @@
 // IIC-IEM – main.js
 
+// ── Official Institutional Preloader Handler ──
+function dismissPreloader() {
+  const loader = document.getElementById('preloader');
+  if (loader) {
+    loader.classList.add('hidden');
+    loader.style.opacity = '0';
+    loader.style.pointerEvents = 'none';
+    setTimeout(() => { loader.style.display = 'none'; }, 300);
+  }
+}
+window.addEventListener('load', dismissPreloader);
+document.addEventListener('DOMContentLoaded', () => { setTimeout(dismissPreloader, 400); });
+setTimeout(dismissPreloader, 800);
+
 // Auto-dismiss toast messages after 5 seconds
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.alert[data-auto-dismiss]').forEach(el => {
