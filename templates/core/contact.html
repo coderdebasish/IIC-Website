@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Get In Touch</span>
+      <h2>Contact Us</h2>
+      <p>Have questions, collaboration ideas, or want to join IIC events? Reach out to our council team.</p>
+    </div>
+
+    <div class="grid-2" style="max-width:960px;margin:0 auto;">
+      <!-- Contact Info Card -->
+      <div class="card" style="padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <h3 style="margin-bottom:1.5rem;"><i class="fas fa-paper-plane" style="color:var(--color-accent);margin-right:.5rem;"></i> Contact Information</h3>
+
+          {% if site_settings.contact_email %}
+          <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(26,86,219,0.15);color:var(--color-primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <div style="font-size:.8rem;color:var(--color-muted);font-weight:600;text-transform:uppercase;">Email Us</div>
+              <a href="mailto:{{ site_settings.contact_email }}" style="font-weight:600;color:var(--color-text);">{{ site_settings.contact_email }}</a>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if site_settings.contact_phone %}
+          <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(14,165,233,0.15);color:var(--color-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div>
+              <div style="font-size:.8rem;color:var(--color-muted);font-weight:600;text-transform:uppercase;">Call Us</div>
+              <span style="font-weight:600;color:var(--color-text);">{{ site_settings.contact_phone }}</span>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if site_settings.contact_address %}
+          <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.5rem;">
+            <div style="width:40px;height:40px;border-radius:10px;background:rgba(16,185,129,0.15);color:var(--color-success);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-location-dot"></i>
+            </div>
+            <div>
+              <div style="font-size:.8rem;color:var(--color-muted);font-weight:600;text-transform:uppercase;">Address</div>
+              <p style="color:var(--color-text);line-height:1.6;font-size:.95rem;">{{ site_settings.contact_address }}</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <div>
+          <h4 style="margin-bottom:1rem;font-size:1rem;color:var(--color-muted);">Follow Our Social Channels</h4>
+          <div class="social-links">
+            {% if site_settings.facebook_url %}<a href="{{ site_settings.facebook_url }}" class="social-link" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>{% endif %}
+            {% if site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" class="social-link" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>{% endif %}
+            {% if site_settings.linkedin_url %}<a href="{{ site_settings.linkedin_url }}" class="social-link" target="_blank" rel="noopener"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+            {% if site_settings.twitter_url %}<a href="{{ site_settings.twitter_url }}" class="social-link" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i></a>{% endif %}
+            {% if site_settings.youtube_url %}<a href="{{ site_settings.youtube_url }}" class="social-link" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- General Info Card -->
+      <div class="card" style="padding:2.5rem;background:var(--color-surface-2);">
+        <h3 style="margin-bottom:1.25rem;"><i class="fas fa-building-columns" style="color:var(--color-primary);margin-right:.5rem;"></i> Visit IEM Campus</h3>
+        <p style="color:var(--color-muted);line-height:1.7;margin-bottom:1.5rem;">
+          Institution's Innovation Council is located within the Institute of Engineering & Management campus, Salt Lake Electronics Complex, Sector V, Kolkata.
+        </p>
+
+        <div style="background:var(--color-bg);padding:1.25rem;border-radius:var(--radius);border:1px solid var(--color-border);margin-bottom:1.5rem;">
+          <div style="font-weight:700;margin-bottom:.25rem;color:var(--color-accent);">Council Office Hours</div>
+          <p style="color:var(--color-muted);font-size:.875rem;">Monday – Friday: 10:00 AM – 5:00 PM</p>
+        </div>
+
+        <a href="{% url 'council:current' %}" class="btn btn-secondary" style="width:100%;justify-content:center;">
+          <i class="fas fa-users"></i> Meet Council Members
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

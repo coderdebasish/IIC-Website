@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Instant Verification</span>
+      <h2>Verify Certificate</h2>
+      <p>Verify the authenticity of any Institution's Innovation Council (IIC - IEM) issued certificate.</p>
+    </div>
+
+    <div class="verify-box">
+      <!-- Search Form -->
+      <form hx-get="{% url 'certificates:verify_api' %}" hx-target="#verify-result-container" hx-indicator="#verify-spinner">
+        <div class="form-group">
+          <label class="form-label" for="cert-id-input">Certificate ID</label>
+          <div style="display:flex;gap:.75rem;">
+            <input type="text" id="cert-id-input" name="certificate_id" class="form-input" placeholder="e.g. IIC-IEM-2026-EX-001" style="font-weight:700;letter-spacing:.05em;text-transform:uppercase;" required>
+            <button type="submit" class="btn btn-primary" style="flex-shrink:0;">
+              <i class="fas fa-magnifying-glass"></i> Verify
+            </button>
+          </div>
+          <p class="form-hint">Enter the unique Certificate ID printed on your document or certificate card.</p>
+        </div>
+      </form>
+
+      <!-- QR Code Scanner Toggle -->
+      <div style="margin-top:1.5rem;text-align:center;">
+        <button id="toggle-qr-btn" class="btn btn-secondary btn-sm" onclick="toggleQRScanner()">
+          <i class="fas fa-qrcode"></i> Scan QR Code with Camera
+        </button>
+      </div>
+
+      <!-- QR Reader Container (Hidden by default) -->
+      <div id="qr-reader-wrapper" style="display:none;margin-top:1.5rem;">
+        <div id="qr-reader" style="width:100%;"></div>
+        <p style="font-size:.8rem;color:var(--color-muted);text-align:center;margin-top:.5rem;">Position the certificate QR code within the frame.</p>
+      </div>
+
+      <!-- HTMX Loading Spinner -->
+      <div id="verify-spinner" class="htmx-indicator" style="text-align:center;padding:1.5rem 0;">
+        <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:var(--color-accent);"></i>
+        <p style="color:var(--color-muted);font-size:.875rem;margin-top:.5rem;">Verifying certificate records...</p>
+      </div>
+
+      <!-- Result Container -->
+      <div id="verify-result-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Html5-QRCode scanner script -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+  let html5QrcodeScanner = null;
+
+  function toggleQRScanner() {
+    const wrapper = document.getElementById('qr-reader-wrapper');
+    const btn = document.getElementById('toggle-qr-btn');
+
+    if (wrapper.style.display === 'none') {
+      wrapper.style.display = 'block';
+      btn.innerHTML = '<i class="fas fa-times"></i> Close Camera';
+
+      html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } });
+      html5QrcodeScanner.render((decodedText) => {
+        // Handle decoded text (URL or direct ID)
+        let certId = decodedText;
+        if (decodedText.includes('certificate_id=')) {
+          certId = new URL(decodedText).searchParams.get('certificate_id');
+        } else if (decodedText.includes('/verify/')) {
+          certId = decodedText.split('/').pop();
+        }
+        document.getElementById('cert-id-input').value = certId;
+        html5QrcodeScanner.clear();
+        wrapper.style.display = 'none';
+        btn.innerHTML = '<i class="fas fa-qrcode"></i> Scan QR Code with Camera';
+        // Trigger verification
+        htmx.trigger('#cert-id-input', 'submit');
+      }, (errorMessage) => {
+        // quiet scanning errors
+      });
+    } else {
+      if (html5QrcodeScanner) {
+        html5QrcodeScanner.clear();
+      }
+      wrapper.style.display = 'none';
+      btn.innerHTML = '<i class="fas fa-qrcode"></i> Scan QR Code with Camera';
+    }
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'admin_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block nav_users %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'users:user_list' %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Admin Users</a>
+    <div>
+      <h1>{{ title }}</h1>
+      <p>Configure credentials, contact details, role permissions, and active status.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;max-width:650px;">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      {{ form.username }}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">First Name</label>
+        {{ form.first_name }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Last Name</label>
+        {{ form.last_name }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      {{ form.email }}
+    </div>
+
+    {% if form.password %}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        {{ form.password }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        {{ form.confirm_password }}
+      </div>
+    </div>
+    {% endif %}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Role</label>
+        {{ form.role }}
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:.75rem;margin-top:1.8rem;">
+        {{ form.is_active }}
+        <label for="{{ form.is_active.id_for_label }}" style="font-weight:600;color:var(--color-success);cursor:pointer;">Active Account</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1.5rem;width:100%;justify-content:center;">
+      <i class="fas fa-save"></i> {{ action }}
+    </button>
+  </form>
+</div>
+{% endblock %}

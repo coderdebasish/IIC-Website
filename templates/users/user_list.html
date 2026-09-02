@@ -1,0 +1,72 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manage Admin Users{% endblock %}
+{% block nav_users %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Admin User Accounts</h1>
+      <p>Manage system access, roles (Super Admin vs Admin), and credentials.</p>
+    </div>
+    <a href="{% url 'users:user_create' %}" class="btn btn-primary">
+      <i class="fas fa-user-plus"></i> Create Admin User
+    </a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Last Login</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in admin_users %}
+      <tr>
+        <td>
+          <div style="font-weight:700;color:var(--color-text);">{{ user.username }}</div>
+        </td>
+        <td>{{ user.get_full_name|default:"–" }}</td>
+        <td>{{ user.email|default:"–" }}</td>
+        <td>
+          {% if user.role == 'super_admin' %}
+          <span class="badge badge-upcoming"><i class="fas fa-shield-halved"></i> Super Admin</span>
+          {% else %}
+          <span class="badge badge-completed"><i class="fas fa-user-shield"></i> Admin</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if user.is_active %}
+          <span class="badge badge-valid">Active</span>
+          {% else %}
+          <span class="badge badge-revoked">Inactive</span>
+          {% endif %}
+        </td>
+        <td style="font-size:.8rem;color:var(--color-muted);">
+          {{ user.last_login|date:"d M Y, h:i A"|default:"Never" }}
+        </td>
+        <td>
+          <div style="display:flex;gap:.4rem;">
+            <a href="{% url 'users:user_edit' user.pk %}" class="btn btn-secondary btn-sm" title="Edit User"><i class="fas fa-pen"></i></a>
+            {% if user.pk != request.user.pk %}
+            <form method="post" action="{% url 'users:user_toggle' user.pk %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary btn-sm" title="Toggle Active Status"><i class="fas fa-power-off"></i></button>
+            </form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

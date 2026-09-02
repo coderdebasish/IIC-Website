@@ -1,0 +1,11 @@
+"""
+IIC-IEM Website – Core App
+Site settings, homepage, about, contact pages.
+"""
+from django.apps import AppConfig
+
+
+class CoreConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'apps.core'
+    verbose_name = 'Core / Site Settings'

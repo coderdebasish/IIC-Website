@@ -1,0 +1,68 @@
+{% extends 'admin_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block nav_achievements %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'achievements:admin_list' %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Achievements</a>
+    <div>
+      <h1>{{ title }}</h1>
+      <p>Configure achievement title, description, image, and category.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;max-width:700px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label class="form-label">Achievement Title</label>
+      {{ form.title }}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        {{ form.category }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date (Optional)</label>
+        {{ form.date }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      {{ form.description }}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">External Link (Optional)</label>
+        {{ form.external_link }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Badge Image / Trophy Icon</label>
+        {{ form.image }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin:1rem 0;">
+      <div class="form-group" style="display:flex;align-items:center;gap:.75rem;">
+        {{ form.is_featured }}
+        <label for="{{ form.is_featured.id_for_label }}" style="font-weight:600;color:var(--color-warning);cursor:pointer;">Feature on Homepage</label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Order</label>
+        {{ form.order }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1rem;">
+      <i class="fas fa-save"></i> {{ action }}
+    </button>
+  </form>
+</div>
+{% endblock %}

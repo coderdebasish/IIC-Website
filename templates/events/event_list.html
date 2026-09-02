@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">All Activities</span>
+      <h2>IIC IEM Events</h2>
+      <p>Discover our upcoming innovation challenges, workshops, webinars, and past event archives.</p>
+    </div>
+
+    <!-- Filter & Tab Controls -->
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--color-border);">
+      <div style="display:flex;gap:.5rem;">
+        <a href="?filter=upcoming{% if active_category %}&category={{ active_category }}{% endif %}" class="btn {% if active_filter != 'past' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">
+          <i class="fas fa-calendar-check"></i> Upcoming & Ongoing
+        </a>
+        <a href="?filter=past{% if active_category %}&category={{ active_category }}{% endif %}" class="btn {% if active_filter == 'past' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">
+          <i class="fas fa-history"></i> Past Events
+        </a>
+      </div>
+
+      {% if all_categories %}
+      <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
+        <span style="font-size:.85rem;color:var(--color-muted);"><i class="fas fa-filter"></i> Category:</span>
+        <a href="?filter={{ active_filter }}" class="badge {% if not active_category %}badge-upcoming{% else %}badge-completed{% endif %}">All</a>
+        {% for cat in all_categories %}
+        <a href="?filter={{ active_filter }}&category={{ cat }}" class="badge {% if active_category == cat %}badge-upcoming{% else %}badge-completed{% endif %}">{{ cat }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    {% if active_filter != 'past' %}
+      <!-- Upcoming Events List -->
+      {% if upcoming_events %}
+      <div class="grid-3">
+        {% for event in upcoming_events %}
+        <article class="card event-card">
+          {% if event.poster %}
+          <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="card-img" loading="lazy">
+          {% else %}
+          <div class="card-img" style="background:linear-gradient(135deg,var(--color-surface-2),var(--color-primary));display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-calendar-star" style="font-size:3rem;color:rgba(255,255,255,0.3);"></i>
+          </div>
+          {% endif %}
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="badge badge-{{ event.status }}">
+                <i class="fas fa-circle" style="font-size:.5rem;"></i> {{ event.get_status_display }}
+              </span>
+              {% if event.category %}<span style="color:var(--color-muted);font-size:.8rem;">{{ event.category }}</span>{% endif %}
+            </div>
+            <h3 class="card-title">{{ event.title }}</h3>
+            <p style="color:var(--color-muted);font-size:.875rem;line-height:1.6;">{{ event.short_description|truncatechars:120 }}</p>
+            <div style="display:flex;align-items:center;gap:.5rem;color:var(--color-muted);font-size:.82rem;flex-wrap:wrap;margin-top:auto;">
+              <span><i class="fas fa-calendar" style="color:var(--color-accent);"></i> {{ event.date_display }}</span>
+              {% if event.venue %}<span><i class="fas fa-map-marker-alt" style="color:var(--color-accent);"></i> {{ event.venue }}</span>{% endif %}
+            </div>
+            <div class="card-footer" style="display:flex;gap:.75rem;">
+              <a href="{{ event.get_absolute_url }}" class="btn btn-secondary btn-sm" style="flex:1;justify-content:center;">View Details</a>
+              {% if event.registration_link %}
+              <a href="{{ event.registration_link }}" class="btn btn-primary btn-sm" target="_blank" rel="noopener" style="flex:1;justify-content:center;">Register →</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="card" style="padding:4rem 2rem;text-align:center;">
+        <i class="fas fa-calendar-xmark" style="font-size:3rem;color:var(--color-muted);margin-bottom:1rem;"></i>
+        <h3>No Upcoming Events Found</h3>
+        <p style="color:var(--color-muted);margin-top:.5rem;">Check back soon for new hackathons, workshops, and seminars!</p>
+        <a href="?filter=past" class="btn btn-secondary" style="margin-top:1.5rem;">Browse Past Events Archive</a>
+      </div>
+      {% endif %}
+
+    {% else %}
+      <!-- Past Events Archive List -->
+      {% if past_events %}
+      <div class="grid-3">
+        {% for event in past_events %}
+        <article class="card event-card">
+          {% if event.poster %}
+          <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="card-img" loading="lazy">
+          {% else %}
+          <div class="card-img" style="background:var(--color-surface-2);display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-image" style="font-size:2.5rem;color:var(--color-border);"></i>
+          </div>
+          {% endif %}
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="badge badge-completed">{{ event.get_status_display }}</span>
+              {% if event.category %}<span style="color:var(--color-muted);font-size:.8rem;">{{ event.category }}</span>{% endif %}
+            </div>
+            <h3 class="card-title">{{ event.title }}</h3>
+            <p style="color:var(--color-muted);font-size:.875rem;">{{ event.short_description|truncatechars:100 }}</p>
+            <div style="color:var(--color-muted);font-size:.82rem;margin-top:auto;">
+              <i class="fas fa-calendar" style="color:var(--color-accent);"></i> {{ event.date_display }}
+            </div>
+            <div class="card-footer">
+              <a href="{{ event.get_absolute_url }}" class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">View Details & Report →</a>
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="card" style="padding:4rem 2rem;text-align:center;">
+        <i class="fas fa-box-archive" style="font-size:3rem;color:var(--color-muted);margin-bottom:1rem;"></i>
+        <h3>No Past Events Archive</h3>
+        <p style="color:var(--color-muted);margin-top:.5rem;">No completed events match the selected criteria.</p>
+      </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

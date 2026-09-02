@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top:4rem;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">About Us</span>
+      <h2>Institution's Innovation Council</h2>
+      <p>Building an ecosystem of innovation, technology, and entrepreneurship at Institute of Engineering & Management (IEM), Kolkata.</p>
+    </div>
+
+    <!-- Vision & Mission Cards -->
+    <div class="grid-2" style="margin-bottom:4rem;">
+      <div class="card" style="padding:2rem;">
+        <div style="width:48px;height:48px;background:rgba(26,86,219,0.15);color:var(--color-primary);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem;">
+          <i class="fas fa-eye"></i>
+        </div>
+        <h3 style="margin-bottom:1rem;">Our Vision</h3>
+        <p style="color:var(--color-muted);line-height:1.8;">
+          {{ site_settings.vision|default:"To create a vibrant local innovation ecosystem, establish a start-up supporting mechanism, and prepare institute students and faculty for innovation and entrepreneurship."|linebreaksbr }}
+        </p>
+      </div>
+
+      <div class="card" style="padding:2rem;">
+        <div style="width:48px;height:48px;background:rgba(14,165,233,0.15);color:var(--color-accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem;">
+          <i class="fas fa-bullseye"></i>
+        </div>
+        <h3 style="margin-bottom:1rem;">Our Mission</h3>
+        <p style="color:var(--color-muted);line-height:1.8;">
+          {{ site_settings.mission|default:"To nurture young minds by providing them access to resources, mentorship, funding opportunities, and a platform to turn innovative ideas into successful enterprises."|linebreaksbr }}
+        </p>
+      </div>
+    </div>
+
+    <!-- About Content -->
+    <div class="card" style="padding:2.5rem;margin-bottom:4rem;">
+      <h3 style="margin-bottom:1.5rem;"><i class="fas fa-university" style="color:var(--color-accent);margin-right:.5rem;"></i> About MoE's Innovation Cell (MIC) & IIC</h3>
+      <div style="color:var(--color-muted);line-height:1.8;font-size:1.05rem;">
+        {{ site_settings.about_iic|default:"Ministry of Education (MoE), Govt. of India has established MoE's Innovation Cell (MIC) to systematically foster the culture of Innovation among all Higher Education Institutions (HEIs). The primary mandate of MIC is to encourage, inspire and nurture young students by supporting them to work with new ideas and transform them into prototypes while they are informative years."|linebreaksbr }}
+      </div>
+    </div>
+
+    {% if site_settings.about_iic_at_iem %}
+    <div class="card" style="padding:2.5rem;margin-bottom:4rem;">
+      <h3 style="margin-bottom:1.5rem;"><i class="fas fa-graduation-cap" style="color:var(--color-primary);margin-right:.5rem;"></i> IIC at IEM Kolkata</h3>
+      <div style="color:var(--color-muted);line-height:1.8;font-size:1.05rem;">
+        {{ site_settings.about_iic_at_iem|linebreaksbr }}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Major Objectives -->
+    <div class="section-header" style="margin-top:4rem;margin-bottom:2.5rem;">
+      <span class="section-tag">Core Goals</span>
+      <h2>Major Objectives</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="card" style="padding:1.75rem;">
+        <i class="fas fa-lightbulb" style="font-size:2rem;color:var(--color-warning);margin-bottom:1rem;"></i>
+        <h4 style="margin-bottom:.5rem;">Ideation & Hackathons</h4>
+        <p style="color:var(--color-muted);font-size:.9rem;">Conduct periodic innovation and entrepreneurship-related activities, hackathons, and ideation sessions.</p>
+      </div>
+      <div class="card" style="padding:1.75rem;">
+        <i class="fas fa-user-tie" style="font-size:2rem;color:var(--color-success);margin-bottom:1rem;"></i>
+        <h4 style="margin-bottom:.5rem;">Mentorship Network</h4>
+        <p style="color:var(--color-muted);font-size:.9rem;">Connect students with experienced entrepreneurs, investors, and industry experts for guidance.</p>
+      </div>
+      <div class="card" style="padding:1.75rem;">
+        <i class="fas fa-rocket" style="font-size:2rem;color:var(--color-accent);margin-bottom:1rem;"></i>
+        <h4 style="margin-bottom:.5rem;">Start-up Support</h4>
+        <p style="color:var(--color-muted);font-size:.9rem;">Nurture early-stage ideas and provide institutional support for incubation and scaling.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'admin_base.html' %}
+{% block title %}Bulk Import Certificates{% endblock %}
+{% block nav_certificates %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'certificates:admin_list' %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Certificates</a>
+    <div>
+      <h1>Bulk Import Certificates (CSV / Excel)</h1>
+      <p>Upload a spreadsheet to register hundreds of certificate verification records instantly.</p>
+    </div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:3fr 2fr;gap:2rem;">
+  <!-- Upload Form -->
+  <div class="card" style="padding:2rem;">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Select Associated Event (Optional)</label>
+        {{ form.event }}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Upload File (.csv or .xlsx)</label>
+        {{ form.file }}
+        <p class="form-hint">Accepted file types: .csv, .xlsx, .xls</p>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1.5rem;width:100%;justify-content:center;">
+        <i class="fas fa-file-import"></i> Import Certificates Now
+      </button>
+    </form>
+  </div>
+
+  <!-- Format Guide Card -->
+  <div class="card" style="padding:1.75rem;background:var(--color-surface-2);">
+    <h3 style="margin-bottom:1rem;font-size:1.05rem;color:var(--color-accent);">
+      <i class="fas fa-table"></i> Required File Columns
+    </h3>
+    <p style="font-size:.875rem;color:var(--color-muted);line-height:1.6;margin-bottom:1.25rem;">
+      Your CSV or Excel file must contain the following exact column headers in the first row:
+    </p>
+
+    <div style="background:var(--color-bg);padding:1rem;border-radius:8px;font-family:monospace;font-size:.8rem;color:var(--color-text);margin-bottom:1.25rem;border:1px solid var(--color-border);">
+      certificate_id, recipient_name, certificate_type, issue_date
+    </div>
+
+    <div style="font-size:.85rem;color:var(--color-muted);display:flex;flex-direction:column;gap:.5rem;">
+      <div><strong style="color:var(--color-text);">certificate_id:</strong> Unique ID (e.g. IIC-IEM-2026-001)</div>
+      <div><strong style="color:var(--color-text);">recipient_name:</strong> Full name of participant</div>
+      <div><strong style="color:var(--color-text);">certificate_type:</strong> Participant, Winner, Runner-Up, Volunteer</div>
+      <div><strong style="color:var(--color-text);">issue_date:</strong> YYYY-MM-DD format (e.g. 2026-09-02)</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

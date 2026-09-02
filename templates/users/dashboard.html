@@ -1,0 +1,112 @@
+{% extends 'admin_base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Dashboard</h1>
+      <p style="color:var(--color-muted);">Welcome back, {{ request.user.get_display_name }}. Here's an overview.</p>
+    </div>
+    <a href="{% url 'events:admin_create' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> New Event
+    </a>
+  </div>
+</div>
+
+<!-- Stat Cards -->
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem;margin-bottom:2.5rem;">
+  <div class="stat-card">
+    <div class="stat-icon" style="background:rgba(26,86,219,0.15);color:var(--color-primary);">
+      <i class="fas fa-calendar-days"></i>
+    </div>
+    <div class="stat-value">{{ total_events }}</div>
+    <div class="stat-label">Total Events</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:rgba(14,165,233,0.15);color:var(--color-accent);">
+      <i class="fas fa-calendar-check"></i>
+    </div>
+    <div class="stat-value">{{ upcoming_events }}</div>
+    <div class="stat-label">Upcoming Events</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:rgba(16,185,129,0.15);color:var(--color-success);">
+      <i class="fas fa-certificate"></i>
+    </div>
+    <div class="stat-value">{{ total_certificates }}</div>
+    <div class="stat-label">Certificate Records</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon" style="background:rgba(245,158,11,0.15);color:var(--color-warning);">
+      <i class="fas fa-bullhorn"></i>
+    </div>
+    <div class="stat-value">{{ active_announcements }}</div>
+    <div class="stat-label">Active Announcements</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+  <!-- Recent Events -->
+  <div class="card">
+    <div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+        <h2 style="font-size:1.1rem;">Recent Events</h2>
+        <a href="{% url 'events:admin_list' %}" style="color:var(--color-accent);font-size:.85rem;">View All →</a>
+      </div>
+      {% if recent_events %}
+      <div style="display:flex;flex-direction:column;gap:.75rem;">
+        {% for event in recent_events %}
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem;background:var(--color-surface-2);border-radius:8px;">
+          <div style="min-width:0;">
+            <div style="font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ event.title }}</div>
+            <div style="color:var(--color-muted);font-size:.78rem;">{{ event.start_date|date:"d M Y" }}</div>
+          </div>
+          <span class="badge badge-{{ event.status }}" style="flex-shrink:0;">{{ event.get_status_display }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="color:var(--color-muted);text-align:center;padding:2rem 0;">No events yet. <a href="{% url 'events:admin_create' %}">Create one →</a></p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="card">
+    <div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+        <h2 style="font-size:1.1rem;">Recent Activity</h2>
+        {% if request.user.is_super_admin %}<a href="{% url 'users:activity_log' %}" style="color:var(--color-accent);font-size:.85rem;">View All →</a>{% endif %}
+      </div>
+      {% if recent_logs %}
+      <div style="display:flex;flex-direction:column;gap:.5rem;">
+        {% for log in recent_logs|slice:":8" %}
+        <div style="padding:.6rem .75rem;background:var(--color-surface-2);border-radius:6px;font-size:.82rem;">
+          <span style="color:var(--color-text);font-weight:500;">{{ log.admin_user.get_display_name|default:"System" }}</span>
+          <span style="color:var(--color-muted);"> {{ log.get_action_display|lower }} </span>
+          <span style="color:var(--color-accent);">{{ log.model_name }}</span>
+          <span style="color:var(--color-muted);float:right;">{{ log.created_at|timesince }} ago</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="color:var(--color-muted);text-align:center;padding:2rem 0;">No activity recorded yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Quick Links -->
+<div style="margin-top:1.5rem;">
+  <h2 style="font-size:1.1rem;margin-bottom:1rem;">Quick Actions</h2>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+    <a href="{% url 'events:admin_create' %}" class="btn btn-secondary btn-sm"><i class="fas fa-calendar-plus"></i> New Event</a>
+    <a href="{% url 'certificates:admin_import' %}" class="btn btn-secondary btn-sm"><i class="fas fa-file-import"></i> Import Certificates</a>
+    <a href="{% url 'council:admin_member_add' %}" class="btn btn-secondary btn-sm"><i class="fas fa-user-plus"></i> Add Member</a>
+    <a href="{% url 'announcements:admin_add' %}" class="btn btn-secondary btn-sm"><i class="fas fa-bullhorn"></i> New Announcement</a>
+    <a href="{% url 'core:admin_settings' %}" class="btn btn-secondary btn-sm"><i class="fas fa-sliders"></i> Site Settings</a>
+  </div>
+</div>
+{% endblock %}

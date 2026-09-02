@@ -1,0 +1,68 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manage Photo Gallery{% endblock %}
+{% block nav_gallery %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Gallery Albums</h1>
+      <p>Organize event photos into public photo albums.</p>
+    </div>
+    <a href="{% url 'gallery:admin_album_add' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Create Album
+    </a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Album Title</th>
+        <th>Cover Image</th>
+        <th>Photos Count</th>
+        <th>Published</th>
+        <th>Order</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for album in albums %}
+      <tr>
+        <td><strong style="color:var(--color-text);">{{ album.title }}</strong></td>
+        <td>
+          {% if album.cover_image %}
+          <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" style="width:48px;height:36px;border-radius:4px;object-fit:cover;">
+          {% else %}
+          –
+          {% endif %}
+        </td>
+        <td><span class="badge badge-upcoming">{{ album.images.count }} Photos</span></td>
+        <td>
+          {% if album.is_published %}
+          <span class="badge badge-valid">Published</span>
+          {% else %}
+          <span class="badge badge-draft">Draft</span>
+          {% endif %}
+        </td>
+        <td>{{ album.order }}</td>
+        <td>
+          <div style="display:flex;gap:.4rem;">
+            <a href="{% url 'gallery:admin_album_edit' album.pk %}" class="btn btn-secondary btn-sm" title="Edit Album & Upload Photos"><i class="fas fa-pen"></i> Edit & Photos</a>
+            <form method="post" action="{% url 'gallery:admin_album_delete' album.pk %}" onsubmit="return confirm('Delete album {{ album.title }}?');" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center;padding:3rem;color:var(--color-muted);">No gallery albums created yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

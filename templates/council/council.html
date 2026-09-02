@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Leadership & Team</span>
+      <h2>IIC Council Members</h2>
+      <p>The faculty advisors, student coordinators, and innovation leads driving the IIC mission at IEM Kolkata.</p>
+    </div>
+
+    <!-- Year Selector Tabs -->
+    {% if all_years %}
+    <div style="display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;margin-bottom:3rem;">
+      {% for y in all_years %}
+      <a href="{% url 'council:by_year' y.year_label %}" class="btn {% if y == current_year %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">
+        <i class="fas fa-users-rectangle"></i> {{ y.year_label }} {% if y.is_current %}(Current){% endif %}
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if current_year %}
+    <div style="text-align:center;margin-bottom:3rem;">
+      <h3 style="color:var(--color-accent);font-size:1.5rem;">Academic Session: {{ current_year.year_label }}</h3>
+      {% if current_year.description %}<p style="color:var(--color-muted);max-width:600px;margin:.5rem auto 0;">{{ current_year.description }}</p>{% endif %}
+    </div>
+
+    <!-- Faculty Leadership Section -->
+    {% if faculty_members %}
+    <div style="margin-bottom:4rem;">
+      <h3 style="font-size:1.35rem;margin-bottom:2rem;padding-bottom:.5rem;border-bottom:2px solid var(--color-primary);display:inline-block;">
+        <i class="fas fa-user-graduate" style="color:var(--color-primary);margin-right:.5rem;"></i> Faculty & Executive Leadership
+      </h3>
+      <div class="grid-4">
+        {% for member in faculty_members %}
+        <div class="card" style="text-align:center;padding:1.75rem;">
+          {% if member.photo %}
+          <img src="{{ member.photo.url }}" alt="{{ member.name }}" style="width:110px;height:110px;border-radius:50%;object-fit:cover;margin:0 auto 1.25rem;border:3px solid var(--color-primary);">
+          {% else %}
+          <div style="width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--color-primary),var(--color-accent));display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;color:white;font-size:2.5rem;font-weight:700;">
+            {{ member.name|first|upper }}
+          </div>
+          {% endif %}
+          <h4 style="font-size:1.05rem;margin-bottom:.25rem;">{{ member.name }}</h4>
+          <div style="color:var(--color-accent);font-weight:600;font-size:.85rem;margin-bottom:.25rem;">{{ member.role }}</div>
+          {% if member.designation %}<div style="color:var(--color-muted);font-size:.8rem;margin-bottom:.75rem;">{{ member.designation }}</div>{% endif %}
+
+          <div style="display:flex;justify-content:center;gap:.5rem;margin-top:auto;padding-top:.75rem;">
+            {% if member.email %}<a href="mailto:{{ member.email }}" class="social-link" title="Email"><i class="fas fa-envelope"></i></a>{% endif %}
+            {% if member.linkedin_url %}<a href="{{ member.linkedin_url }}" target="_blank" rel="noopener" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Student Coordinators Section -->
+    {% if student_members %}
+    <div>
+      <h3 style="font-size:1.35rem;margin-bottom:2rem;padding-bottom:.5rem;border-bottom:2px solid var(--color-accent);display:inline-block;">
+        <i class="fas fa-user-astronaut" style="color:var(--color-accent);margin-right:.5rem;"></i> Student Coordinators & Leads
+      </h3>
+      <div class="grid-4">
+        {% for member in student_members %}
+        <div class="card" style="text-align:center;padding:1.5rem;">
+          {% if member.photo %}
+          <img src="{{ member.photo.url }}" alt="{{ member.name }}" style="width:90px;height:90px;border-radius:50%;object-fit:cover;margin:0 auto 1rem;border:2px solid var(--color-accent);">
+          {% else %}
+          <div style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--color-surface-2),var(--color-accent));display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:white;font-size:2rem;font-weight:700;">
+            {{ member.name|first|upper }}
+          </div>
+          {% endif %}
+          <h4 style="font-size:1rem;margin-bottom:.2rem;">{{ member.name }}</h4>
+          <div style="color:var(--color-accent);font-weight:600;font-size:.8rem;margin-bottom:.2rem;">{{ member.role }}</div>
+          {% if member.designation %}<div style="color:var(--color-muted);font-size:.78rem;margin-bottom:.5rem;">{{ member.designation }}</div>{% endif %}
+
+          <div style="display:flex;justify-content:center;gap:.5rem;margin-top:auto;">
+            {% if member.email %}<a href="mailto:{{ member.email }}" class="social-link" style="width:30px;height:30px;font-size:.75rem;"><i class="fas fa-envelope"></i></a>{% endif %}
+            {% if member.linkedin_url %}<a href="{{ member.linkedin_url }}" target="_blank" rel="noopener" class="social-link" style="width:30px;height:30px;font-size:.75rem;"><i class="fab fa-linkedin-in"></i></a>{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="card" style="padding:4rem 2rem;text-align:center;">
+      <i class="fas fa-users-slash" style="font-size:3rem;color:var(--color-muted);margin-bottom:1rem;"></i>
+      <h3>No Council Data Published</h3>
+      <p style="color:var(--color-muted);margin-top:.5rem;">Council members will be listed once uploaded by the admin panel.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

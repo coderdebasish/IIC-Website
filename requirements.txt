@@ -1,0 +1,30 @@
+# IIC-IEM Website – Production Requirements
+# ==========================================
+
+# Core Framework
+Django>=5.2,<6.0
+
+# Database
+psycopg2-binary>=2.9
+
+# Image Processing
+Pillow>=10.4
+
+# Environment Variable Management
+python-decouple>=3.8
+
+# Static Files (production)
+whitenoise>=6.7
+
+# WSGI Server
+gunicorn>=22.0
+
+# HTMX Django helper
+django-htmx>=1.19
+
+# CSV / Excel Import for Certificates
+pandas>=2.2
+openpyxl>=3.1
+
+# Rich Text Editor
+django-ckeditor-5>=0.2

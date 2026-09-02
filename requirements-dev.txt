@@ -1,0 +1,8 @@
+# Development-only extras
+-r requirements.txt
+
+# Debugging
+django-debug-toolbar>=4.3
+
+# Better shell
+ipython>=8.0

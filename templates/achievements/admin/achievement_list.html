@@ -1,0 +1,73 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manage Achievements{% endblock %}
+{% block nav_achievements %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Achievement & Award Records</h1>
+      <p>Manage accolades, institutional rankings, and student/faculty awards.</p>
+    </div>
+    <a href="{% url 'achievements:admin_add' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add Achievement
+    </a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Featured</th>
+        <th>Order</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ach in achievements %}
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            {% if ach.image %}
+            <img src="{{ ach.image.url }}" alt="{{ ach.title }}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;">
+            {% else %}
+            <div style="width:40px;height:40px;border-radius:6px;background:var(--color-primary);display:flex;align-items:center;justify-content:center;color:white;">
+              <i class="fas fa-trophy"></i>
+            </div>
+            {% endif %}
+            <strong style="color:var(--color-text);">{{ ach.title }}</strong>
+          </div>
+        </td>
+        <td><span class="badge badge-upcoming">{{ ach.get_category_display }}</span></td>
+        <td style="font-size:.85rem;color:var(--color-muted);">{{ ach.date|date:"M Y"|default:"–" }}</td>
+        <td>
+          {% if ach.is_featured %}
+          <i class="fas fa-star" style="color:var(--color-warning);" title="Featured on Homepage"></i>
+          {% else %}
+          –
+          {% endif %}
+        </td>
+        <td>{{ ach.order }}</td>
+        <td>
+          <div style="display:flex;gap:.4rem;">
+            <a href="{% url 'achievements:admin_edit' ach.pk %}" class="btn btn-secondary btn-sm" title="Edit"><i class="fas fa-pen"></i></a>
+            <form method="post" action="{% url 'achievements:admin_delete' ach.pk %}" onsubmit="return confirm('Delete this achievement?');" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center;padding:3rem;color:var(--color-muted);">No achievement records added yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'admin_base.html' %}
+{% block title %}About & Mission Settings{% endblock %}
+{% block nav_about_settings %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>About & Mission Settings</h1>
+  <p>Update the core vision, mission, and organizational details displayed on the public About page.</p>
+</div>
+
+<div class="card" style="padding:2rem;max-width:900px;">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label class="form-label">About MoE's Innovation Cell (IIC)</label>
+      {{ form.about_iic }}
+      <p class="form-hint">Background of Ministry of Education's Innovation Cell mandate.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">About IIC at IEM Kolkata</label>
+      {{ form.about_iic_at_iem }}
+      <p class="form-hint">Specific background about IEM Kolkata's council activities.</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Vision Statement</label>
+      {{ form.vision }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Mission Statement</label>
+      {{ form.mission }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Objectives</label>
+      {{ form.objectives }}
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1rem;">
+      <i class="fas fa-save"></i> Save About Content
+    </button>
+  </form>
+</div>
+{% endblock %}

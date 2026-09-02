@@ -1,0 +1,99 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manage Certificates{% endblock %}
+{% block nav_certificates %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Certificate Database</h1>
+      <p>Search, filter, manually add, revoke, or bulk-import certificate verification records.</p>
+    </div>
+    <div style="display:flex;gap:.75rem;">
+      <a href="{% url 'certificates:admin_import' %}" class="btn btn-primary">
+        <i class="fas fa-file-import"></i> Bulk Import CSV/Excel
+      </a>
+      <a href="{% url 'certificates:admin_add' %}" class="btn btn-secondary">
+        <i class="fas fa-plus"></i> Add Single
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Search & Filter Form -->
+<div class="card" style="padding:1.25rem;margin-bottom:1.5rem;">
+  <form method="get" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+    <div style="flex:1;min-width:240px;">
+      <input type="text" name="q" value="{{ search }}" class="form-input" placeholder="Search Certificate ID or Recipient Name...">
+    </div>
+    <div style="width:200px;">
+      <select name="status" class="form-select">
+        <option value="">All Statuses</option>
+        {% for st_val, st_lbl in status_choices %}
+        <option value="{{ st_val }}" {% if active_status == st_val %}selected{% endif %}>{{ st_lbl }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div style="width:220px;">
+      <select name="event" class="form-select">
+        <option value="">All Events</option>
+        {% for ev in events %}
+        <option value="{{ ev.pk }}" {% if active_event == ev.pk|slugify %}selected{% endif %}>{{ ev.title|truncatechars:30 }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-secondary"><i class="fas fa-filter"></i> Filter</button>
+    {% if search or active_status or active_event %}
+    <a href="{% url 'certificates:admin_list' %}" class="btn btn-secondary btn-sm" style="color:var(--color-muted);"><i class="fas fa-times"></i> Clear</a>
+    {% endif %}
+  </form>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Certificate ID</th>
+        <th>Recipient Name</th>
+        <th>Event</th>
+        <th>Category / Type</th>
+        <th>Issue Date</th>
+        <th>Status</th>
+        <th>Batch</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cert in certificates %}
+      <tr>
+        <td>
+          <div style="font-family:monospace;font-weight:700;color:var(--color-accent);">{{ cert.certificate_id }}</div>
+        </td>
+        <td><strong style="color:var(--color-text);">{{ cert.recipient_name }}</strong></td>
+        <td>{{ cert.event.title|default:"General"|truncatechars:25 }}</td>
+        <td><span class="badge badge-upcoming">{{ cert.certificate_type }}</span></td>
+        <td style="font-size:.85rem;color:var(--color-muted);">{{ cert.issue_date|date:"d M Y" }}</td>
+        <td>
+          <span class="badge badge-{{ cert.status }}">{{ cert.get_status_display }}</span>
+        </td>
+        <td style="font-size:.78rem;font-family:monospace;color:var(--color-muted);">{{ cert.import_batch|default:"Manual" }}</td>
+        <td>
+          <div style="display:flex;gap:.4rem;">
+            <a href="{% url 'certificates:admin_edit' cert.pk %}" class="btn btn-secondary btn-sm" title="Edit Record"><i class="fas fa-pen"></i></a>
+            {% if cert.status == 'valid' %}
+            <a href="{% url 'certificates:admin_revoke' cert.pk %}" class="btn btn-danger btn-sm" title="Revoke Certificate"><i class="fas fa-ban"></i></a>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8" style="text-align:center;padding:3rem;color:var(--color-muted);">
+          No certificate records found matching the search criteria.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

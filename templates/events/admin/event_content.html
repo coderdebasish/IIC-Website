@@ -1,0 +1,34 @@
+{% extends 'admin_base.html' %}
+{% block title %}Rich Content: {{ event.title }}{% endblock %}
+{% block nav_events %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'events:admin_detail' event.pk %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Hub</a>
+    <div>
+      <h1>Rich Description: {{ event.title }}</h1>
+      <p>Compose detailed event rules, agenda, speaker profiles, and descriptions using the CKEditor 5 WYSIWYG editor.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.media }}
+
+    <div class="form-group">
+      <label class="form-label" style="font-size:1.05rem;margin-bottom:1rem;">Event Overview & Agenda</label>
+      {{ form.content }}
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-top:2rem;">
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="fas fa-save"></i> Save Content
+      </button>
+      <a href="{% url 'events:admin_detail' event.pk %}" class="btn btn-secondary btn-lg">Back to Hub</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

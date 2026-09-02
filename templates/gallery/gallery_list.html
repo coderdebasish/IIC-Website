@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Visual Memories</span>
+      <h2>Photo Gallery Albums</h2>
+      <p>Explore photo albums from workshops, hackathons, guest lectures, and campus events.</p>
+    </div>
+
+    {% if albums %}
+    <div class="grid-3">
+      {% for album in albums %}
+      <a href="{% url 'gallery:album_detail' album.pk %}" class="card" style="display:flex;flex-direction:column;text-decoration:none;color:inherit;">
+        {% if album.cover_image %}
+        <img src="{{ album.cover_image.url }}" alt="{{ album.title }}" class="card-img" style="height:220px;object-fit:cover;">
+        {% else %}
+        <div class="card-img" style="height:220px;background:linear-gradient(135deg,var(--color-surface-2),var(--color-primary));display:flex;align-items:center;justify-content:center;">
+          <i class="fas fa-images" style="font-size:3.5rem;color:rgba(255,255,255,0.3);"></i>
+        </div>
+        {% endif %}
+
+        <div class="card-body">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
+            <span class="badge badge-upcoming"><i class="fas fa-camera"></i> {{ album.image_count }} Photos</span>
+            <span style="font-size:.78rem;color:var(--color-muted);">{{ album.created_at|date:"M Y" }}</span>
+          </div>
+          <h3 style="font-size:1.15rem;margin-bottom:.5rem;">{{ album.title }}</h3>
+          {% if album.description %}<p style="color:var(--color-muted);font-size:.875rem;">{{ album.description|truncatechars:90 }}</p>{% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="card" style="padding:4rem 2rem;text-align:center;">
+      <i class="fas fa-images" style="font-size:3rem;color:var(--color-muted);margin-bottom:1rem;"></i>
+      <h3>No Gallery Albums Available</h3>
+      <p style="color:var(--color-muted);margin-top:.5rem;">Photo albums will be published soon.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'admin_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block nav_announcements %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'announcements:admin_list' %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Announcements</a>
+    <div>
+      <h1>{{ title }}</h1>
+      <p>Configure title, priority level, external link, and expiration schedule.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;max-width:700px;">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label class="form-label">Announcement Title / Headline</label>
+      {{ form.title }}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Content / Body</label>
+      {{ form.content }}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">External Link (Optional)</label>
+        {{ form.link }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Link Button Text</label>
+        {{ form.link_text }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Priority Level</label>
+        {{ form.priority }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Expiration Date (Optional)</label>
+        {{ form.expiration_date }}
+        <p class="form-hint">Automatically hides after this date.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:2rem;margin:1rem 0;">
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        {{ form.show_on_home }}
+        <label for="{{ form.show_on_home.id_for_label }}" style="font-weight:600;color:var(--color-accent);cursor:pointer;">Show on Homepage Ticker</label>
+      </div>
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        {{ form.is_active }}
+        <label for="{{ form.is_active.id_for_label }}" style="font-weight:600;color:var(--color-success);cursor:pointer;">Active / Published</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1rem;">
+      <i class="fas fa-save"></i> {{ action }}
+    </button>
+  </form>
+</div>
+{% endblock %}

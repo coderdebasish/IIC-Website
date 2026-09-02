@@ -1,0 +1,51 @@
+{% extends 'admin_base.html' %}
+{% block title %}Activity Log{% endblock %}
+{% block nav_activity %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Admin Audit Activity Log</h1>
+  <p>Comprehensive audit trail of admin actions across all management modules.</p>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Admin User</th>
+        <th>Action</th>
+        <th>Model / Entity</th>
+        <th>Object ID / Title</th>
+        <th>Details</th>
+        <th>IP Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td style="font-size:.8rem;color:var(--color-muted);white-space:nowrap;">
+          {{ log.created_at|date:"d M Y, h:i A" }}
+        </td>
+        <td>
+          <strong style="color:var(--color-text);">{{ log.admin_user.get_display_name|default:"System" }}</strong>
+        </td>
+        <td>
+          <span class="badge {% if log.action_type == 'create' %}badge-ongoing{% elif log.action_type == 'delete' %}badge-revoked{% else %}badge-upcoming{% endif %}">
+            {{ log.get_action_type_display }}
+          </span>
+        </td>
+        <td><code style="color:var(--color-accent);">{{ log.model_name }}</code></td>
+        <td style="font-weight:600;">{{ log.object_repr|default:log.object_id }}</td>
+        <td style="font-size:.85rem;color:var(--color-muted);">{{ log.details|default:"–" }}</td>
+        <td style="font-size:.78rem;font-family:monospace;color:var(--color-muted);">{{ log.ip_address|default:"–" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" style="text-align:center;padding:3rem;color:var(--color-muted);">No activity logs recorded yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

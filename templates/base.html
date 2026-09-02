@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}IIC – IEM{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}{{ site_settings.meta_description }}{% endblock %}">
+  <meta name="keywords" content="{{ site_settings.meta_keywords }}">
+  <meta property="og:title" content="{% block og_title %}IIC – IEM{% endblock %}">
+  <meta property="og:description" content="{{ site_settings.meta_description }}">
+  <meta name="theme-color" content="#1a56db">
+
+  {% load static %}
+
+  {% if site_settings.favicon %}
+  <link rel="icon" type="image/x-icon" href="{{ site_settings.favicon.url }}">
+  {% else %}
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  {% endif %}
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="{% url 'core:home' %}" class="navbar-brand" aria-label="IIC IEM Home">
+          {% if site_settings.logo %}
+            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }} logo">
+          {% else %}
+            <div style="width:44px;height:44px;background:linear-gradient(135deg,#1a56db,#0ea5e9);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:1.1rem;">IIC</div>
+          {% endif %}
+          <div class="navbar-brand-text">
+            {{ site_settings.site_name|default:"IIC – IEM" }}
+            <span>{{ site_settings.tagline|default:"Institution's Innovation Council"|truncatechars:40 }}</span>
+          </div>
+        </a>
+
+        <ul class="nav-links" id="nav-links" role="list">
+          <li><a href="{% url 'core:home' %}">Home</a></li>
+          <li><a href="{% url 'core:about' %}">About</a></li>
+          <li><a href="{% url 'events:list' %}">Events</a></li>
+          <li><a href="{% url 'council:current' %}">Council</a></li>
+          <li><a href="{% url 'achievements:list' %}">Achievements</a></li>
+          <li><a href="{% url 'gallery:list' %}">Gallery</a></li>
+          <li><a href="{% url 'certificates:verify' %}" class="nav-cta">Verify Certificate</a></li>
+        </ul>
+
+        <button class="navbar-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Toast Messages ── -->
+  {% if messages %}
+  <div class="messages-container" role="alert" aria-live="polite">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags|default:'info' }}" data-auto-dismiss>
+      <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-times-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}" aria-hidden="true"></i>
+      <span>{{ message }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- ── Page Content ── -->
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          {% if site_settings.logo %}
+            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}">
+          {% else %}
+            <div style="display:inline-flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
+              <div style="width:40px;height:40px;background:linear-gradient(135deg,#1a56db,#0ea5e9);border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;">IIC</div>
+              <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.1rem;">{{ site_settings.site_name|default:"IIC – IEM" }}</span>
+            </div>
+          {% endif %}
+          <p class="footer-desc">{{ site_settings.tagline|default:"Fostering Innovation & Entrepreneurship at IEM Kolkata." }}</p>
+          {% if social_links %}
+          <div class="social-links">
+            {% for link in social_links %}
+            <a href="{{ link.url }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="{{ link.label }}">
+              <i class="{{ link.icon }}" aria-hidden="true"></i>
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+
+        <div>
+          <h3 class="footer-heading">Navigate</h3>
+          <ul class="footer-links">
+            <li><a href="{% url 'core:home' %}">Home</a></li>
+            <li><a href="{% url 'core:about' %}">About IIC</a></li>
+            <li><a href="{% url 'events:list' %}">Events</a></li>
+            <li><a href="{% url 'council:current' %}">Council</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">More</h3>
+          <ul class="footer-links">
+            <li><a href="{% url 'achievements:list' %}">Achievements</a></li>
+            <li><a href="{% url 'gallery:list' %}">Gallery</a></li>
+            <li><a href="{% url 'announcements:list' %}">Announcements</a></li>
+            <li><a href="{% url 'certificates:verify' %}">Verify Certificate</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="footer-heading">Contact</h3>
+          {% if site_settings.contact_email %}
+          <p style="color:var(--color-muted);font-size:.9rem;margin-bottom:.5rem;"><i class="fas fa-envelope" style="margin-right:.5rem;color:var(--color-accent);"></i>{{ site_settings.contact_email }}</p>
+          {% endif %}
+          {% if site_settings.contact_phone %}
+          <p style="color:var(--color-muted);font-size:.9rem;margin-bottom:.5rem;"><i class="fas fa-phone" style="margin-right:.5rem;color:var(--color-accent);"></i>{{ site_settings.contact_phone }}</p>
+          {% endif %}
+          {% if site_settings.contact_address %}
+          <p style="color:var(--color-muted);font-size:.85rem;line-height:1.6;"><i class="fas fa-map-marker-alt" style="margin-right:.5rem;color:var(--color-accent);"></i>{{ site_settings.contact_address }}</p>
+          {% endif %}
+          <div style="margin-top:1.25rem;">
+            <a href="{% url 'core:contact' %}" class="btn btn-secondary btn-sm">Contact Us</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>{{ site_settings.footer_text|default:"© IIC – IEM Kolkata. All Rights Reserved." }}</p>
+        <p><a href="{% url 'users:login' %}" style="color:var(--color-muted);font-size:.8rem;">Admin</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── Scripts ── -->
+  <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5ViYgSibmK" crossorigin="anonymous"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+// IIC-IEM – main.js
+
+// Auto-dismiss toast messages after 5 seconds
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.alert[data-auto-dismiss]').forEach(el => {
+    setTimeout(() => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(20px)';
+      el.style.transition = '0.4s ease';
+      setTimeout(() => el.remove(), 400);
+    }, 5000);
+  });
+
+  // Mobile nav toggle
+  const toggle = document.getElementById('nav-toggle');
+  const navLinks = document.getElementById('nav-links');
+  if (toggle && navLinks) {
+    toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  }
+
+  // Active nav link highlighting
+  const currentPath = window.location.pathname;
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    if (link.getAttribute('href') === currentPath ||
+        (link.getAttribute('href') !== '/' && currentPath.startsWith(link.getAttribute('href')))) {
+      link.classList.add('active');
+    }
+  });
+});

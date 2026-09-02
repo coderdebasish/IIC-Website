@@ -1,0 +1,63 @@
+{% extends 'admin_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block nav_events %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'events:admin_stages' event.pk %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Stages</a>
+    <div>
+      <h1>{{ title }}</h1>
+      <p>Configure order number, stage name, start/end dates, and current active status.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;max-width:700px;">
+  <form method="post">
+    {% csrf_token %}
+
+    <div style="display:grid;grid-template-columns:3fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Stage Name</label>
+        {{ form.name }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Order</label>
+        {{ form.stage_order }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Description (Optional)</label>
+      {{ form.description }}
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Start Date</label>
+        {{ form.start_date }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">End Date</label>
+        {{ form.end_date }}
+      </div>
+    </div>
+
+    <div style="display:flex;gap:2rem;margin:1.5rem 0;">
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        {{ form.is_current }}
+        <label for="{{ form.is_current.id_for_label }}" style="font-weight:600;color:var(--color-accent);cursor:pointer;">Set as Current Active Stage</label>
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        {{ form.is_completed }}
+        <label for="{{ form.is_completed.id_for_label }}" style="font-weight:600;color:var(--color-success);cursor:pointer;">Mark Stage Completed</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg">
+      <i class="fas fa-save"></i> {{ action }}
+    </button>
+  </form>
+</div>
+{% endblock %}

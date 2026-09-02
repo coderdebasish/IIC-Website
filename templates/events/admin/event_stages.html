@@ -1,0 +1,81 @@
+{% extends 'admin_base.html' %}
+{% block title %}Lifecycle Stages: {{ event.title }}{% endblock %}
+{% block nav_events %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="{% url 'events:admin_detail' event.pk %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Hub</a>
+      <div>
+        <h1>Lifecycle Stages: {{ event.title }}</h1>
+        <p>Define custom milestone steps (e.g., Registrations, Round 1, Mentorship, Finale, Winner Announcement).</p>
+      </div>
+    </div>
+    <a href="{% url 'events:admin_stage_add' event.pk %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add Stage
+    </a>
+  </div>
+</div>
+
+<div class="table-wrap" style="margin-bottom:2rem;">
+  <table>
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Stage Name</th>
+        <th>Description</th>
+        <th>Dates</th>
+        <th>Status Flags</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stage in stages %}
+      <tr>
+        <td style="font-weight:700;color:var(--color-accent);">{{ stage.stage_order }}</td>
+        <td>
+          <strong style="font-size:1rem;color:var(--color-text);">{{ stage.name }}</strong>
+        </td>
+        <td style="font-size:.85rem;color:var(--color-muted);">{{ stage.description|default:"–" }}</td>
+        <td style="font-size:.8rem;color:var(--color-muted);">
+          {% if stage.start_date %}{{ stage.start_date|date:"d M Y" }}{% endif %}
+          {% if stage.end_date %} – {{ stage.end_date|date:"d M Y" }}{% endif %}
+          {% if not stage.start_date and not stage.end_date %}–{% endif %}
+        </td>
+        <td>
+          {% if stage.is_current %}
+          <span class="badge badge-ongoing"><i class="fas fa-play"></i> CURRENT STAGE</span>
+          {% elif stage.is_completed %}
+          <span class="badge badge-valid"><i class="fas fa-check"></i> COMPLETED</span>
+          {% else %}
+          <span class="badge badge-completed">UPCOMING</span>
+          {% endif %}
+        </td>
+        <td>
+          <div style="display:flex;gap:.4rem;">
+            {% if not stage.is_current %}
+            <form method="post" action="{% url 'events:admin_stage_set_current' event.pk stage.pk %}" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary btn-sm" title="Set as Current Stage"><i class="fas fa-flag-checkered"></i> Make Current</button>
+            </form>
+            {% endif %}
+            <a href="{% url 'events:admin_stage_edit' event.pk stage.pk %}" class="btn btn-secondary btn-sm" title="Edit"><i class="fas fa-pen"></i></a>
+            <form method="post" action="{% url 'events:admin_stage_delete' event.pk stage.pk %}" style="display:inline;" onsubmit="return confirm('Delete this stage?');">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6" style="text-align:center;padding:3rem;color:var(--color-muted);">
+          No lifecycle stages defined for this event. <a href="{% url 'events:admin_stage_add' event.pk %}">Add the first stage →</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

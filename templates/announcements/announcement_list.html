@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:860px;">
+    <div class="section-header">
+      <span class="section-tag">Updates & Bulletins</span>
+      <h2>Official Announcements</h2>
+      <p>Stay informed with official notifications, deadlines, and news from IIC IEM.</p>
+    </div>
+
+    {% if announcements %}
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+      {% for ann in announcements %}
+      <div class="card" style="padding:2rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            {% if ann.priority == 'urgent' %}
+            <span class="badge badge-revoked"><i class="fas fa-triangle-exclamation"></i> URGENT</span>
+            {% elif ann.priority == 'important' %}
+            <span class="badge badge-draft"><i class="fas fa-exclamation-circle"></i> IMPORTANT</span>
+            {% else %}
+            <span class="badge badge-upcoming"><i class="fas fa-info-circle"></i> ANNOUNCEMENT</span>
+            {% endif %}
+            <span style="font-size:.82rem;color:var(--color-muted);"><i class="fas fa-clock"></i> {{ ann.created_at|date:"d M Y, h:i A" }}</span>
+          </div>
+        </div>
+
+        <h3 style="font-size:1.25rem;margin-bottom:.75rem;">{{ ann.title }}</h3>
+        <div style="color:var(--color-muted);line-height:1.7;font-size:1rem;margin-bottom:1.25rem;">
+          {{ ann.content|linebreaksbr }}
+        </div>
+
+        {% if ann.link %}
+        <div>
+          <a href="{{ ann.link }}" class="btn btn-primary btn-sm" target="_blank" rel="noopener">
+            <i class="fas fa-arrow-right-long"></i> {{ ann.link_text|default:"Read More" }}
+          </a>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="card" style="padding:4rem 2rem;text-align:center;">
+      <i class="fas fa-bullhorn" style="font-size:3rem;color:var(--color-muted);margin-bottom:1rem;"></i>
+      <h3>No Active Announcements</h3>
+      <p style="color:var(--color-muted);margin-top:.5rem;">All quiet for now! Check back later for official notices.</p>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+{% endblock %}

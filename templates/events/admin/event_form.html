@@ -1,0 +1,105 @@
+{% extends 'admin_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block nav_events %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'events:admin_list' %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i></a>
+    <div>
+      <h1>{{ title }}</h1>
+      <p>Configure event basic information, registration links, schedules, and posters.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;max-width:900px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Event Title</label>
+        {{ form.title }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL Slug</label>
+        {{ form.slug }}
+        <p class="form-hint">Auto-generated if left blank.</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Short Description</label>
+      {{ form.short_description }}
+      <p class="form-hint">Brief summary shown on event cards across the website.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Start Date & Time</label>
+        {{ form.start_date }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">End Date & Time (Optional)</label>
+        {{ form.end_date }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        {{ form.status }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        {{ form.category }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Registration Form Link (Google Form, etc.)</label>
+        {{ form.registration_link }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Registration Deadline</label>
+        {{ form.registration_deadline }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Venue Name</label>
+        {{ form.venue }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Google Maps Link (Optional)</label>
+        {{ form.venue_link }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Tags (comma-separated)</label>
+        {{ form.tags }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Event Poster Image</label>
+        {{ form.poster }}
+      </div>
+    </div>
+
+    <div class="form-group" style="display:flex;align-items:center;gap:.75rem;">
+      {{ form.is_featured }}
+      <label for="{{ form.is_featured.id_for_label }}" style="font-weight:600;color:var(--color-text);cursor:pointer;">
+        Feature this event on the Homepage
+      </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1.5rem;">
+      <i class="fas fa-save"></i> {{ action }}
+    </button>
+  </form>
+</div>
+{% endblock %}

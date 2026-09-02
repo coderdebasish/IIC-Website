@@ -1,0 +1,86 @@
+{% if error %}
+<div class="verify-result verify-invalid" style="margin-top:1.5rem;">
+  <div style="display:flex;align-items:center;gap:.75rem;color:var(--color-danger);font-weight:700;margin-bottom:.5rem;">
+    <i class="fas fa-circle-exclamation" style="font-size:1.25rem;"></i> {{ error }}
+  </div>
+</div>
+{% elif not_found %}
+<div class="verify-result verify-invalid" style="margin-top:1.5rem;">
+  <div style="display:flex;align-items:center;gap:.75rem;color:var(--color-danger);font-weight:700;margin-bottom:.5rem;">
+    <i class="fas fa-circle-xmark" style="font-size:1.5rem;"></i> Certificate Not Found
+  </div>
+  <p style="color:var(--color-muted);font-size:.9rem;">
+    No valid record found matching Certificate ID <strong style="color:var(--color-text);">"{{ searched_id }}"</strong>.
+  </p>
+  <p style="color:var(--color-muted);font-size:.8rem;margin-top:.5rem;">
+    Please verify the ID format and try again, or contact the IIC team if you believe this is an error.
+  </p>
+</div>
+{% elif certificate %}
+  {% if result.status == 'valid' %}
+  <div class="verify-result verify-valid" style="margin-top:1.5rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid rgba(16,185,129,0.2);">
+      <div style="display:flex;align-items:center;gap:.75rem;color:var(--color-success);font-weight:800;font-size:1.1rem;">
+        <i class="fas fa-circle-check" style="font-size:1.5rem;"></i> Certificate Verified Authentic
+      </div>
+      <span class="badge badge-valid">VALID RECORD</span>
+    </div>
+
+    <div class="verify-field">
+      <div class="verify-field-label">Recipient Name:</div>
+      <div style="font-weight:700;color:var(--color-text);font-size:1.05rem;">{{ result.recipient_name }}</div>
+    </div>
+
+    <div class="verify-field">
+      <div class="verify-field-label">Certificate ID:</div>
+      <div style="font-family:monospace;font-weight:700;color:var(--color-accent);">{{ result.certificate_id }}</div>
+    </div>
+
+    <div class="verify-field">
+      <div class="verify-field-label">Category / Type:</div>
+      <div style="color:var(--color-text);">{{ result.certificate_type }}</div>
+    </div>
+
+    {% if result.event_title %}
+    <div class="verify-field">
+      <div class="verify-field-label">Event:</div>
+      <div style="color:var(--color-text);font-weight:600;">{{ result.event_title }}</div>
+    </div>
+    {% endif %}
+
+    <div class="verify-field">
+      <div class="verify-field-label">Issue Date:</div>
+      <div style="color:var(--color-text);">{{ result.issue_date }}</div>
+    </div>
+
+    <div class="verify-field">
+      <div class="verify-field-label">Issuer:</div>
+      <div style="color:var(--color-muted);font-size:.85rem;">{{ result.issuer }}</div>
+    </div>
+  </div>
+  {% else %}
+  <!-- Revoked Certificate Result -->
+  <div class="verify-result verify-invalid" style="margin-top:1.5rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid rgba(239,68,68,0.2);">
+      <div style="display:flex;align-items:center;gap:.75rem;color:var(--color-danger);font-weight:800;font-size:1.1rem;">
+        <i class="fas fa-ban" style="font-size:1.5rem;"></i> Certificate Revoked
+      </div>
+      <span class="badge badge-revoked">REVOKED</span>
+    </div>
+
+    <div class="verify-field">
+      <div class="verify-field-label">Certificate ID:</div>
+      <div style="font-family:monospace;font-weight:700;color:var(--color-danger);">{{ result.certificate_id }}</div>
+    </div>
+
+    <div class="verify-field">
+      <div class="verify-field-label">Recipient Name:</div>
+      <div style="color:var(--color-text);">{{ result.recipient_name }}</div>
+    </div>
+
+    <p style="color:var(--color-danger);font-size:.85rem;margin-top:.75rem;padding:.5rem;background:rgba(239,68,68,0.1);border-radius:6px;">
+      <strong>Note:</strong> This certificate was officially revoked by the Institution's Innovation Council and is no longer valid.
+    </p>
+  </div>
+  {% endif %}
+{% endif %}

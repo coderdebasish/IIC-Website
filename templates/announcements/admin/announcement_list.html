@@ -1,0 +1,80 @@
+{% extends 'admin_base.html' %}
+{% block title %}Manage Announcements{% endblock %}
+{% block nav_announcements %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Announcements & Bulletins</h1>
+      <p>Post ticker announcements, urgent bulletins, and event notifications.</p>
+    </div>
+    <a href="{% url 'announcements:admin_add' %}" class="btn btn-primary">
+      <i class="fas fa-bullhorn"></i> New Announcement
+    </a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Priority</th>
+        <th>Show on Home</th>
+        <th>Link</th>
+        <th>Expires</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ann in announcements %}
+      <tr>
+        <td><strong style="color:var(--color-text);">{{ ann.title }}</strong></td>
+        <td>
+          {% if ann.priority == 'urgent' %}
+          <span class="badge badge-revoked">URGENT</span>
+          {% elif ann.priority == 'important' %}
+          <span class="badge badge-draft">IMPORTANT</span>
+          {% else %}
+          <span class="badge badge-upcoming">Normal</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if ann.show_on_home %}
+          <i class="fas fa-check-circle" style="color:var(--color-success);"></i> Yes
+          {% else %}
+          <span style="color:var(--color-muted);">No</span>
+          {% endif %}
+        </td>
+        <td style="font-size:.85rem;color:var(--color-muted);">
+          {% if ann.link %}<a href="{{ ann.link }}" target="_blank">View Link</a>{% else %}–{% endif %}
+        </td>
+        <td style="font-size:.85rem;color:var(--color-muted);">{{ ann.expiration_date|date:"d M Y"|default:"Never" }}</td>
+        <td>
+          {% if ann.is_visible %}
+          <span class="badge badge-valid">Visible</span>
+          {% else %}
+          <span class="badge badge-revoked">Hidden / Expired</span>
+          {% endif %}
+        </td>
+        <td>
+          <div style="display:flex;gap:.4rem;">
+            <a href="{% url 'announcements:admin_edit' ann.pk %}" class="btn btn-secondary btn-sm" title="Edit"><i class="fas fa-pen"></i></a>
+            <form method="post" action="{% url 'announcements:admin_delete' ann.pk %}" onsubmit="return confirm('Delete announcement?');" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" style="text-align:center;padding:3rem;color:var(--color-muted);">No announcements created yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

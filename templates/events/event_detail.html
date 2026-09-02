@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block meta_description %}{{ meta_description }}{% endblock %}
+
+{% block content %}
+<!-- Event Banner & Header -->
+<section style="padding:4rem 0 2rem;background:radial-gradient(ellipse 80% 50% at 50% 0%,rgba(26,86,219,0.2) 0%,transparent 70%),var(--color-surface);border-bottom:1px solid var(--color-border);">
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-size:.85rem;color:var(--color-muted);">
+      <a href="{% url 'events:list' %}" style="color:var(--color-muted);">Events</a>
+      <span>/</span>
+      <span style="color:var(--color-text);">{{ event.title }}</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:2.5rem;align-items:start;">
+      <div>
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;">
+          <span class="badge badge-{{ event.status }}">
+            <i class="fas fa-circle" style="font-size:.5rem;"></i> {{ event.get_status_display }}
+          </span>
+          {% if event.category %}<span class="badge badge-upcoming">{{ event.category }}</span>{% endif %}
+        </div>
+        <h1 style="font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;">{{ event.title }}</h1>
+        <p style="font-size:1.1rem;color:var(--color-muted);line-height:1.7;margin-bottom:1.5rem;">{{ event.short_description }}</p>
+
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;color:var(--color-muted);font-size:.95rem;padding:1rem 0;border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border);">
+          <div><i class="fas fa-calendar" style="color:var(--color-accent);margin-right:.4rem;"></i> {{ event.date_display }}</div>
+          {% if event.venue %}
+          <div>
+            <i class="fas fa-map-marker-alt" style="color:var(--color-accent);margin-right:.4rem;"></i>
+            {% if event.venue_link %}<a href="{{ event.venue_link }}" target="_blank" rel="noopener" style="color:var(--color-text);">{{ event.venue }}</a>{% else %}{{ event.venue }}{% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Action Card -->
+      <div class="card" style="padding:1.75rem;">
+        {% if event.poster %}
+        <img src="{{ event.poster.url }}" alt="{{ event.title }}" style="width:100%;border-radius:10px;margin-bottom:1.25rem;">
+        {% endif %}
+
+        {% if event.is_registration_open and event.registration_link %}
+        <a href="{{ event.registration_link }}" class="btn btn-primary btn-lg" target="_blank" rel="noopener" style="width:100%;justify-content:center;margin-bottom:1rem;">
+          <i class="fas fa-paper-plane"></i> Register Now
+        </a>
+        {% if event.registration_deadline %}
+        <div style="font-size:.8rem;color:var(--color-warning);text-align:center;">
+          <i class="fas fa-clock"></i> Closes: {{ event.registration_deadline|date:"d M Y, h:i A" }}
+        </div>
+        {% endif %}
+        {% elif event.status == 'completed' %}
+        <div class="alert alert-info" style="margin-bottom:0;">
+          <i class="fas fa-check-circle"></i> This event has concluded.
+        </div>
+        {% else %}
+        <div style="color:var(--color-muted);font-size:.875rem;text-align:center;">Registration opens soon.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lifecycle Tracker Section -->
+{% if stages %}
+<section style="background:var(--color-bg);padding:2.5rem 0;border-bottom:1px solid var(--color-border);">
+  <div class="container">
+    <h3 style="font-size:1.1rem;margin-bottom:1rem;color:var(--color-muted);text-transform:uppercase;letter-spacing:.05em;">
+      <i class="fas fa-bars-progress" style="color:var(--color-accent);margin-right:.4rem;"></i> Event Status Timeline
+    </h3>
+    <div class="lifecycle">
+      {% for stage in stages %}
+      <div class="lifecycle-step {% if stage.is_completed %}completed{% elif stage.is_current %}current{% endif %}">
+        <div class="lifecycle-dot">
+          {% if stage.is_completed %}<i class="fas fa-check"></i>{% else %}{{ stage.stage_order }}{% endif %}
+        </div>
+        <div class="lifecycle-label">{{ stage.name }}</div>
+        {% if stage.start_date %}<div class="lifecycle-date">{{ stage.start_date|date:"d M" }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Event Main Content -->
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:3fr 1fr;gap:3rem;">
+      <div>
+        <!-- Rich Content -->
+        {% if content and content.content %}
+        <div class="card" style="padding:2.5rem;margin-bottom:3rem;">
+          <h2 style="margin-bottom:1.5rem;">Event Overview & Agenda</h2>
+          <div class="event-rich-content" style="color:var(--color-text);line-height:1.8;">
+            {{ content.content|safe }}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Event Report (If completed) -->
+        {% if report and report.is_published %}
+        <div class="card" style="padding:2.5rem;margin-bottom:3rem;background:var(--color-surface-2);">
+          <h3 style="margin-bottom:1rem;"><i class="fas fa-file-lines" style="color:var(--color-success);margin-right:.5rem;"></i> Official Event Report</h3>
+          {% if report.content %}
+          <div style="color:var(--color-muted);line-height:1.7;margin-bottom:1.5rem;">
+            {{ report.content|safe }}
+          </div>
+          {% endif %}
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+            {% if report.pdf_file %}
+            <a href="{{ report.pdf_file.url }}" class="btn btn-primary btn-sm" target="_blank">
+              <i class="fas fa-file-pdf"></i> Download PDF Report
+            </a>
+            {% endif %}
+            {% if report.external_link %}
+            <a href="{{ report.external_link }}" class="btn btn-secondary btn-sm" target="_blank" rel="noopener">
+              <i class="fas fa-external-link-alt"></i> External Report Link
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Event Gallery -->
+        {% if gallery %}
+        <div class="card" style="padding:2.5rem;">
+          <h3 style="margin-bottom:1.5rem;"><i class="fas fa-images" style="color:var(--color-accent);margin-right:.5rem;"></i> Event Gallery</h3>
+          <div class="grid-3">
+            {% for item in gallery %}
+            <div style="border-radius:10px;overflow:hidden;border:1px solid var(--color-border);">
+              <img src="{{ item.image.url }}" alt="{{ item.caption|default:event.title }}" style="width:100%;height:180px;object-fit:cover;" loading="lazy">
+              {% if item.caption %}
+              <div style="padding:.5rem .75rem;font-size:.8rem;color:var(--color-muted);background:var(--color-surface-2);">{{ item.caption }}</div>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Sidebar -->
+      <div>
+        <div class="card" style="padding:1.5rem;position:sticky;top:90px;">
+          <h4 style="margin-bottom:1rem;font-size:1rem;">Event Details</h4>
+          <div style="display:flex;flex-direction:column;gap:.75rem;font-size:.9rem;color:var(--color-muted);">
+            <div><strong style="color:var(--color-text);">Category:</strong> {{ event.category|default:"General" }}</div>
+            <div><strong style="color:var(--color-text);">Start:</strong> {{ event.start_date|date:"d M Y, h:i A" }}</div>
+            {% if event.end_date %}<div><strong style="color:var(--color-text);">End:</strong> {{ event.end_date|date:"d M Y, h:i A" }}</div>{% endif %}
+            <div><strong style="color:var(--color-text);">Venue:</strong> {{ event.venue|default:"Online" }}</div>
+            {% if event.tags %}
+            <div style="margin-top:.5rem;">
+              <strong style="color:var(--color-text);display:block;margin-bottom:.3rem;">Tags:</strong>
+              <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+                {% for tag in event.get_tags_list %}
+                <span class="badge badge-completed">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

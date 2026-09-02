@@ -1,0 +1,73 @@
+{% extends 'admin_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block nav_council %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="{% url 'council:admin_list' %}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Council</a>
+    <div>
+      <h1>{{ title }}</h1>
+      <p>Add or edit council member details, role, photo, and social links.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="padding:2rem;max-width:750px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        {{ form.name }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Council Academic Year</label>
+        {{ form.council_year }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Role in IIC (e.g. President, Vice President, Lead)</label>
+        {{ form.role }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Designation / Department</label>
+        {{ form.designation }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Member Category</label>
+        {{ form.member_type }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Display Order</label>
+        {{ form.order_no }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Profile Photo</label>
+        {{ form.photo }}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">Email Address (Optional)</label>
+        {{ form.email }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">LinkedIn URL (Optional)</label>
+        {{ form.linkedin_url }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-top:1rem;">
+      <i class="fas fa-save"></i> {{ action }}
+    </button>
+  </form>
+</div>
+{% endblock %}

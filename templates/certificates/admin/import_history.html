@@ -1,0 +1,60 @@
+{% extends 'admin_base.html' %}
+{% block title %}Import History{% endblock %}
+{% block nav_certificates %}active{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="page-header-row">
+    <div>
+      <h1>Certificate Import Logs</h1>
+      <p>Audit trail of bulk CSV/Excel certificate upload batches.</p>
+    </div>
+    <a href="{% url 'certificates:admin_import' %}" class="btn btn-primary">
+      <i class="fas fa-file-import"></i> New Import
+    </a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Batch ID</th>
+        <th>File Name</th>
+        <th>Event</th>
+        <th>Uploaded By</th>
+        <th>Total Rows</th>
+        <th>Imported</th>
+        <th>Skipped</th>
+        <th>Errors</th>
+        <th>Status</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for log in logs %}
+      <tr>
+        <td style="font-family:monospace;font-weight:700;color:var(--color-accent);">{{ log.batch_id }}</td>
+        <td>{{ log.file_name }}</td>
+        <td>{{ log.event.title|default:"–"|truncatechars:20 }}</td>
+        <td>{{ log.uploaded_by.get_display_name|default:"Admin" }}</td>
+        <td>{{ log.total_rows }}</td>
+        <td style="color:var(--color-success);font-weight:700;">{{ log.imported_count }}</td>
+        <td style="color:var(--color-warning);">{{ log.skipped_count }}</td>
+        <td style="color:var(--color-danger);">{{ log.error_count }}</td>
+        <td>
+          <span class="badge {% if log.status == 'completed' %}badge-valid{% elif log.status == 'failed' %}badge-revoked{% else %}badge-draft{% endif %}">
+            {{ log.get_status_display }}
+          </span>
+        </td>
+        <td style="font-size:.8rem;color:var(--color-muted);">{{ log.created_at|date:"d M Y, h:i A" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="10" style="text-align:center;padding:3rem;color:var(--color-muted);">No import logs recorded yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
