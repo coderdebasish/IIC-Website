@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       navLinks.classList.contains('open') ? closeMenu() : openMenu();
     });
 
-    // Close menu when clicking outside
+    // Close menu when clicking / tapping outside
     document.addEventListener('click', (e) => {
       if (navLinks.classList.contains('open')) {
         if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
@@ -54,15 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close menu when tapping outside on touch devices
-    document.addEventListener('touchstart', (e) => {
-      if (navLinks.classList.contains('open')) {
-        if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
-          closeMenu();
-        }
-      }
-    }, { passive: true });
-
     // Escape key closes mobile menu
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && navLinks.classList.contains('open')) {
@@ -70,24 +61,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Touch Swipe Gestures (Swipe Up or Left to close menu)
-    let touchStartY = 0;
+    // Intentional Swipe Left to Close (Guarded so vertical scrolling NEVER closes menu)
     let touchStartX = 0;
+    let touchStartY = 0;
 
     navLinks.addEventListener('touchstart', (e) => {
-      touchStartY = e.touches[0].clientY;
       touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
     }, { passive: true });
 
     navLinks.addEventListener('touchend', (e) => {
       if (!navLinks.classList.contains('open')) return;
-      const touchEndY = e.changedTouches[0].clientY;
       const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
 
-      const diffY = touchStartY - touchEndY; // Swiped Up
       const diffX = touchStartX - touchEndX; // Swiped Left
+      const diffY = Math.abs(touchStartY - touchEndY); // Vertical movement
 
-      if (diffY > 40 || Math.abs(diffX) > 60) {
+      // Only close if explicit horizontal swipe left (> 100px) and minimal vertical movement (< 30px)
+      if (diffX > 100 && diffY < 30) {
         closeMenu();
       }
     }, { passive: true });

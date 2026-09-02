@@ -88,37 +88,27 @@
   <header class="brand-header">
     <div class="container brand-header-inner">
       <!-- Left Side Logos: 1. IEM, 2. IIC IEM Kolkata -->
-      <div class="brand-logos" style="display:flex;align-items:center;gap:1.25rem;">
-        <a href="{% url 'core:home' %}" style="display:flex;align-items:center;gap:1rem;text-decoration:none;">
-          <!-- 1. IEM Logo -->
-          <img src="{% static 'images/logos/IEM .jpeg' %}" alt="IEM Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
-          <!-- 2. IIC IEM Kolkata Logo -->
-          <img src="{% static 'images/logos/IIC IEM Kolkata.png' %}" alt="IIC IEM Kolkata Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;">
+      <div class="brand-logos brand-logos-left">
+        <a href="{% url 'core:home' %}" class="brand-logo-link">
+          <img src="{% static 'images/logos/IEM .jpeg' %}" alt="IEM Logo" class="brand-logo-img logo-iem">
+          <img src="{% static 'images/logos/IIC IEM Kolkata.png' %}" alt="IIC IEM Kolkata Logo" class="brand-logo-img logo-iic-kol">
         </a>
       </div>
 
       <!-- Center Title -->
-      <div class="brand-title" style="text-align:center;">
+      <div class="brand-title">
         <a href="{% url 'core:home' %}" style="text-decoration:none;">
-          <h1 style="font-size:1.5rem;font-weight:800;color:var(--color-primary);margin:0;letter-spacing:-0.01em;text-transform:uppercase;">
-            Institution's Innovation Council
-          </h1>
-          <p style="font-size:.9rem;color:var(--color-gold);font-weight:700;margin-top:.15rem;letter-spacing:.02em;">
-            Institute of Engineering & Management (IEM) & UEM Kolkata
-          </p>
-          <p style="font-size:.78rem;color:var(--color-muted);font-weight:600;margin-top:.1rem;">
-            Ministry of Education's Innovation Cell (MIC), Govt. of India Mandated Council
-          </p>
+          <h1 class="brand-heading">Institution's Innovation Council</h1>
+          <p class="brand-subheading">Institute of Engineering & Management (IEM) & UEM Kolkata</p>
+          <p class="brand-mandate">Ministry of Education's Innovation Cell (MIC), Govt. of India Mandated Council</p>
         </a>
       </div>
 
-      <!-- Right Side Logos: 3. MoE IIC Logo, 4. UEM Logo (Corner) -->
-      <div class="brand-logos-right" style="display:flex;align-items:center;gap:1rem;">
-        <a href="{% url 'core:home' %}" style="display:flex;align-items:center;gap:1rem;text-decoration:none;">
-          <!-- 3. MoE IIC Logo -->
-          <img src="{% static 'images/logos/IIC Logo.jpeg' %}" alt="MoE IIC Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;border-radius:4px;">
-          <!-- 4. UEM Logo (Corner) -->
-          <img src="{% static 'images/logos/UEM.jpeg' %}" alt="UEM Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+      <!-- Right Side Logos: 3. MoE IIC Logo, 4. UEM Logo -->
+      <div class="brand-logos brand-logos-right">
+        <a href="{% url 'core:home' %}" class="brand-logo-link">
+          <img src="{% static 'images/logos/IIC Logo.jpeg' %}" alt="MoE IIC Logo" class="brand-logo-img logo-moe">
+          <img src="{% static 'images/logos/UEM.jpeg' %}" alt="UEM Logo" class="brand-logo-img logo-uem">
         </a>
       </div>
     </div>

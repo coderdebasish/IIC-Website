@@ -83,12 +83,57 @@ img { max-width: 100%; height: auto; display: block; }
   padding: 1.25rem 0;
   border-bottom: 1px solid var(--color-border-light);
 }
-.brand-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
-.brand-logos { display: flex; align-items: center; gap: 1.25rem; }
-.brand-logo-img { height: 56px; width: auto; object-fit: contain; }
-.brand-title { min-width: 0; }
-.brand-title h1 { font-size: 1.4rem; font-weight: 800; color: var(--color-primary); margin: 0; letter-spacing: -0.01em; }
-.brand-title p { font-size: 0.85rem; color: var(--color-muted); font-weight: 500; margin-top: 0.15rem; }
+.brand-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.brand-logos {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.brand-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+}
+.brand-logo-img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.logo-iem, .logo-uem {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.brand-title {
+  text-align: center;
+  flex: 1;
+}
+.brand-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.brand-subheading {
+  font-size: 0.9rem;
+  color: var(--color-gold);
+  font-weight: 700;
+  margin-top: 0.15rem;
+  letter-spacing: 0.02em;
+}
+.brand-mandate {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  font-weight: 600;
+  margin-top: 0.1rem;
+}
 
 /* ── Main Navigation Bar ── */
 .navbar {
@@ -377,9 +422,60 @@ tr:hover td { background: #f8fafc; }
 }
 @media (max-width: 768px) {
   .top-bar { display: none; }
-  .brand-header-inner { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
-  .brand-logos, .brand-logos-right { justify-content: center; width: 100%; }
-  .brand-logo-img { height: 52px !important; }
+  .brand-header {
+    padding: 0.75rem 0.5rem;
+  }
+  .brand-header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.75rem;
+  }
+  .brand-logos-left {
+    order: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .brand-logos-right {
+    order: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .brand-title {
+    order: 3 !important;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 0.35rem;
+  }
+
+  .brand-logo-img {
+    height: 40px !important;
+    width: auto;
+    object-fit: contain;
+  }
+  .brand-logo-link {
+    gap: 0.5rem !important;
+  }
+  .brand-heading {
+    font-size: 1.15rem !important;
+    line-height: 1.25 !important;
+    margin: 0;
+    text-align: center;
+  }
+  .brand-subheading {
+    font-size: 0.78rem !important;
+    margin-top: 0.2rem !important;
+    text-align: center;
+  }
+  .brand-mandate {
+    font-size: 0.7rem !important;
+    margin-top: 0.1rem !important;
+    text-align: center;
+  }
 
   .navbar-inner {
     position: relative;
