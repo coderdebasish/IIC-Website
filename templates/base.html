@@ -127,6 +127,9 @@
   <!-- Main Navigation Bar -->
   <nav class="navbar" role="navigation" aria-label="Main Navigation">
     <div class="container navbar-inner">
+      <button class="navbar-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
       <ul class="nav-links" id="nav-links">
         <li><a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
         <li><a href="{% url 'core:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About IIC</a></li>
@@ -138,9 +141,6 @@
         <li><a href="{% url 'certificates:verify' %}" class="{% if 'certificates' in request.path %}active{% endif %}">Verify Certificate</a></li>
         <li><a href="{% url 'core:contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a></li>
       </ul>
-      <button class="navbar-toggle" id="nav-toggle" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-      </button>
     </div>
   </nav>
 
