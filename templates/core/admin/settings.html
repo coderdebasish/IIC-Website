@@ -36,15 +36,26 @@
     </div>
 
     <h3 style="margin:2rem 0 1.25rem;font-size:1.1rem;color:var(--color-accent);border-bottom:1px solid var(--color-border);padding-bottom:.5rem;">
-      <i class="fas fa-rocket"></i> Hero Section (Homepage)
+      <i class="fas fa-user-tie"></i> President / Leadership Message
     </h3>
-    <div class="form-group">
-      <label class="form-label">Hero Headline</label>
-      {{ form.hero_tagline }}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;">
+      <div class="form-group">
+        <label class="form-label">President Name</label>
+        {{ form.president_name }}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Designation</label>
+        {{ form.president_designation }}
+      </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Hero Subtitle / Description</label>
-      {{ form.hero_description }}
+      <label class="form-label">President Message / Quote</label>
+      {{ form.president_message }}
+    </div>
+    <div class="form-group">
+      <label class="form-label">President Photo</label>
+      {{ form.president_image }}
+      <p class="form-hint">Upload formal portrait photo of President / Director.</p>
     </div>
 
     <h3 style="margin:2rem 0 1.25rem;font-size:1.1rem;color:var(--color-accent);border-bottom:1px solid var(--color-border);padding-bottom:.5rem;">

@@ -13,6 +13,7 @@ class SiteSettingsForm(forms.ModelForm):
         fields = [
             'site_name', 'tagline', 'logo', 'favicon',
             'hero_tagline', 'hero_description', 'hero_background',
+            'president_name', 'president_designation', 'president_message', 'president_image',
             'contact_email', 'contact_phone', 'contact_address',
             'facebook_url', 'instagram_url', 'twitter_url', 'linkedin_url', 'youtube_url',
             'footer_text', 'meta_description', 'meta_keywords',
@@ -22,6 +23,9 @@ class SiteSettingsForm(forms.ModelForm):
             'tagline': forms.TextInput(attrs={'class': 'form-input'}),
             'hero_tagline': forms.TextInput(attrs={'class': 'form-input'}),
             'hero_description': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 3}),
+            'president_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'president_designation': forms.TextInput(attrs={'class': 'form-input'}),
+            'president_message': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 4}),
             'contact_email': forms.EmailInput(attrs={'class': 'form-input'}),
             'contact_phone': forms.TextInput(attrs={'class': 'form-input'}),
             'contact_address': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 3}),

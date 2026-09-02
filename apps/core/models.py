@@ -56,6 +56,32 @@ class SiteSettings(models.Model):
         blank=True,
     )
 
+    # ── Leadership / President's Message ─────────────────────────────────────
+    president_name = models.CharField(
+        _('president name'),
+        max_length=200,
+        default='Prof. Dr. Satyajit Chakrabarti',
+        blank=True,
+    )
+    president_designation = models.CharField(
+        _('president designation'),
+        max_length=300,
+        default='President, IIC IEM & President, IEM UEM Group',
+        blank=True,
+    )
+    president_message = models.TextField(
+        _('president message'),
+        default='The IEM UEM Group has set sublime standards in addressing technical and managerial innovation. Our Institution\'s Innovation Council serves as a catalyst for student startups, research breakthroughs, and national-level entrepreneurship.',
+        blank=True,
+    )
+    president_image = models.ImageField(
+        _('president photo'),
+        upload_to='site/',
+        null=True,
+        blank=True,
+        help_text=_('Photo of President / Director.'),
+    )
+
     # ── About ─────────────────────────────────────────────────────────────────
     about_iic = models.TextField(
         _('about IIC'),

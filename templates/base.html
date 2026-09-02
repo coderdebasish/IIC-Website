@@ -1,158 +1,210 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}IIC – IEM{% endblock %}</title>
+  <title>{% block title %}{{ site_settings.site_name|default:"IIC – IEM Kolkata" }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ site_settings.meta_description }}{% endblock %}">
-  <meta name="keywords" content="{{ site_settings.meta_keywords }}">
-  <meta property="og:title" content="{% block og_title %}IIC – IEM{% endblock %}">
-  <meta property="og:description" content="{{ site_settings.meta_description }}">
-  <meta name="theme-color" content="#1a56db">
 
-  {% load static %}
-
+  <!-- Favicon -->
   {% if site_settings.favicon %}
-  <link rel="icon" type="image/x-icon" href="{{ site_settings.favicon.url }}">
-  {% else %}
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="icon" href="{{ site_settings.favicon.url }}">
   {% endif %}
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts & FontAwesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- Custom CSS -->
+  <!-- Main Institutional Stylesheet -->
   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
-
   {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-  <!-- ── Navigation ── -->
-  <nav class="navbar" role="navigation" aria-label="Main navigation">
-    <div class="container">
-      <div class="navbar-inner">
-        <a href="{% url 'core:home' %}" class="navbar-brand" aria-label="IIC IEM Home">
-          {% if site_settings.logo %}
-            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }} logo">
-          {% else %}
-            <div style="width:44px;height:44px;background:linear-gradient(135deg,#1a56db,#0ea5e9);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:1.1rem;">IIC</div>
-          {% endif %}
-          <div class="navbar-brand-text">
-            {{ site_settings.site_name|default:"IIC – IEM" }}
-            <span>{{ site_settings.tagline|default:"Institution's Innovation Council"|truncatechars:40 }}</span>
-          </div>
-        </a>
-
-        <ul class="nav-links" id="nav-links" role="list">
-          <li><a href="{% url 'core:home' %}">Home</a></li>
-          <li><a href="{% url 'core:about' %}">About</a></li>
-          <li><a href="{% url 'events:list' %}">Events</a></li>
-          <li><a href="{% url 'council:current' %}">Council</a></li>
-          <li><a href="{% url 'achievements:list' %}">Achievements</a></li>
-          <li><a href="{% url 'gallery:list' %}">Gallery</a></li>
-          <li><a href="{% url 'certificates:verify' %}" class="nav-cta">Verify Certificate</a></li>
-        </ul>
-
-        <button class="navbar-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <i class="fas fa-bars" aria-hidden="true"></i>
-        </button>
+  <!-- Top Bar (Official Institutional Portal Strip) -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-contact">
+        <span><i class="fas fa-university" style="color:var(--color-gold);margin-right:.3rem;"></i> Ministry of Education's Innovation Cell (MIC) Initiative</span>
+        {% if site_settings.contact_email %}
+        <span><i class="fas fa-envelope" style="margin-right:.3rem;"></i> <a href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a></span>
+        {% endif %}
+        {% if site_settings.contact_phone %}
+        <span><i class="fas fa-phone" style="margin-right:.3rem;"></i> {{ site_settings.contact_phone }}</span>
+        {% endif %}
       </div>
+      <div class="top-bar-links">
+        <a href="{% url 'certificates:verify' %}"><i class="fas fa-shield-check" style="margin-right:.3rem;"></i> Certificate Verification</a>
+        <a href="{% url 'users:login' %}"><i class="fas fa-user-lock" style="margin-right:.3rem;"></i> Admin Portal</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Institutional Brand Header (Displaying all 4 Official Logos) -->
+  <header class="brand-header">
+    <div class="container brand-header-inner">
+      <div class="brand-logos" style="display:flex;align-items:center;gap:1.25rem;">
+        <a href="{% url 'core:home' %}" style="display:flex;align-items:center;gap:1rem;text-decoration:none;">
+          <!-- IEM Logo -->
+          <img src="{% static 'images/logos/IEM .jpeg' %}" alt="IEM Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.1);" onerror="this.style.display='none'">
+          <!-- UEM Logo -->
+          <img src="{% static 'images/logos/UEM.jpeg' %}" alt="UEM Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.1);" onerror="this.style.display='none'">
+        </a>
+      </div>
+
+      <div class="brand-title" style="text-align:center;">
+        <a href="{% url 'core:home' %}" style="text-decoration:none;">
+          <h1 style="font-size:1.5rem;font-weight:800;color:var(--color-primary);margin:0;letter-spacing:-0.01em;text-transform:uppercase;">
+            Institution's Innovation Council
+          </h1>
+          <p style="font-size:.9rem;color:var(--color-gold);font-weight:700;margin-top:.15rem;letter-spacing:.02em;">
+            Institute of Engineering & Management (IEM) & UEM Kolkata
+          </p>
+          <p style="font-size:.78rem;color:var(--color-muted);font-weight:600;margin-top:.1rem;">
+            Ministry of Education's Innovation Cell (MIC), Govt. of India Mandated Council
+          </p>
+        </a>
+      </div>
+
+      <div class="brand-logos-right" style="display:flex;align-items:center;gap:1rem;">
+        <a href="{% url 'core:home' %}" style="display:flex;align-items:center;gap:1rem;text-decoration:none;">
+          <!-- IIC IEM Kolkata Crest -->
+          <img src="{% static 'images/logos/IIC IEM Kolkata.png' %}" alt="IIC IEM Kolkata Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;" onerror="this.style.display='none'">
+          <!-- MoE IIC Logo -->
+          <img src="{% static 'images/logos/IIC Logo.jpeg' %}" alt="MoE IIC Logo" class="brand-logo-img" style="height:64px;width:auto;object-fit:contain;border-radius:4px;" onerror="this.style.display='none'">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Bar -->
+  <nav class="navbar" role="navigation" aria-label="Main Navigation">
+    <div class="container navbar-inner">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
+        <li><a href="{% url 'core:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}">About IIC</a></li>
+        <li><a href="{% url 'events:list' %}" class="{% if 'events' in request.path %}active{% endif %}">Events & Activities</a></li>
+        <li><a href="{% url 'council:current' %}" class="{% if 'council' in request.path %}active{% endif %}">Council Members</a></li>
+        <li><a href="{% url 'achievements:list' %}" class="{% if 'achievements' in request.path %}active{% endif %}">Achievements</a></li>
+        <li><a href="{% url 'gallery:list' %}" class="{% if 'gallery' in request.path %}active{% endif %}">Photo Gallery</a></li>
+        <li><a href="{% url 'announcements:list' %}" class="{% if 'announcements' in request.path %}active{% endif %}">Announcements</a></li>
+        <li><a href="{% url 'certificates:verify' %}" class="{% if 'certificates' in request.path %}active{% endif %}">Verify Certificate</a></li>
+        <li><a href="{% url 'core:contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}">Contact Us</a></li>
+      </ul>
+      <button class="navbar-toggle" id="nav-toggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
   </nav>
 
-  <!-- ── Toast Messages ── -->
+  <!-- Toast Notification System -->
   {% if messages %}
   <div class="messages-container" role="alert" aria-live="polite">
     {% for message in messages %}
     <div class="alert alert-{{ message.tags|default:'info' }}" data-auto-dismiss>
-      <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-times-circle{% elif message.tags == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}" aria-hidden="true"></i>
+      <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-info-circle{% endif %}"></i>
       <span>{{ message }}</span>
     </div>
     {% endfor %}
   </div>
   {% endif %}
 
-  <!-- ── Page Content ── -->
+  <!-- Main Content Block -->
   <main id="main-content">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- ── Footer ── -->
-  <footer class="footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          {% if site_settings.logo %}
-            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}">
-          {% else %}
-            <div style="display:inline-flex;align-items:center;gap:.75rem;margin-bottom:1rem;">
-              <div style="width:40px;height:40px;background:linear-gradient(135deg,#1a56db,#0ea5e9);border-radius:9px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;">IIC</div>
-              <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.1rem;">{{ site_settings.site_name|default:"IIC – IEM" }}</span>
-            </div>
-          {% endif %}
-          <p class="footer-desc">{{ site_settings.tagline|default:"Fostering Innovation & Entrepreneurship at IEM Kolkata." }}</p>
-          {% if social_links %}
-          <div class="social-links">
-            {% for link in social_links %}
-            <a href="{{ link.url }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="{{ link.label }}">
-              <i class="{{ link.icon }}" aria-hidden="true"></i>
-            </a>
-            {% endfor %}
+  <!-- Official Footer (Matching IEM.edu.in Institutional Footer) -->
+  <footer class="footer" role="contentinfo" style="background:#0a2540;color:#cbd5e1;padding:0;border-top:4px solid var(--color-gold);">
+    <div style="display:grid;grid-template-columns:300px 1fr;">
+
+      <!-- Left Gold Box (Matches IEM.edu.in Yellow Contact Block) -->
+      <div style="background:#f59e0b;color:#0f172a;padding:2.5rem 2rem;display:flex;flex-direction:column;align-items:center;text-align:center;">
+        <div style="width:72px;height:72px;background:#0a2540;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:900;font-size:1.25rem;margin-bottom:1rem;border:2px solid white;">
+          IEM
+        </div>
+        <h3 style="font-size:1.15rem;font-weight:800;color:#0f172a;margin-bottom:.25rem;">INSTITUTE OF ENGINEERING & MANAGEMENT</h3>
+        <p style="font-size:.78rem;color:#451a03;font-weight:700;margin-bottom:1.5rem;">GOOD EDUCATION, GOOD JOBS</p>
+
+        <div style="font-size:.875rem;font-weight:700;margin-bottom:.5rem;">
+          <i class="fas fa-phone"></i> {{ site_settings.contact_phone|default:"8010700500 / 8069795500" }}
+        </div>
+        <div style="font-size:.85rem;font-weight:600;margin-bottom:1.5rem;">
+          <i class="fas fa-envelope"></i> {{ site_settings.contact_email|default:"admissions@iem.edu.in" }}
+        </div>
+
+        <div class="social-links" style="justify-content:center;margin-bottom:1.5rem;">
+          {% if site_settings.facebook_url %}<a href="{{ site_settings.facebook_url }}" class="social-link" style="background:#0a2540;color:white;" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>{% endif %}
+          {% if site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" class="social-link" style="background:#0a2540;color:white;" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>{% endif %}
+          {% if site_settings.youtube_url %}<a href="{{ site_settings.youtube_url }}" class="social-link" style="background:#0a2540;color:white;" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>{% endif %}
+        </div>
+
+        <p style="font-size:.75rem;color:#78350f;margin-top:auto;font-weight:600;">
+          Copyright {% now "Y" %} | IEM Group<br>
+          Institution's Innovation Council
+        </p>
+      </div>
+
+      <!-- Right Navy Columns (Matches IEM.edu.in Portal Columns) -->
+      <div style="padding:2.5rem 3rem;">
+        <div class="footer-grid" style="grid-template-columns:repeat(4, 1fr);gap:2rem;margin-bottom:2rem;">
+          <div>
+            <div class="footer-heading">Compliances</div>
+            <ul class="footer-links">
+              <li><a href="#">NIRF Ranking</a></li>
+              <li><a href="#">NAAC SSR Documentation</a></li>
+              <li><a href="#">Audit Statements</a></li>
+              <li><a href="#">Mandatory Disclosure</a></li>
+              <li><a href="#">UGC e-Samadhaan</a></li>
+              <li><a href="#">ARIIA Innovation Ranking</a></li>
+            </ul>
           </div>
-          {% endif %}
-        </div>
 
-        <div>
-          <h3 class="footer-heading">Navigate</h3>
-          <ul class="footer-links">
-            <li><a href="{% url 'core:home' %}">Home</a></li>
-            <li><a href="{% url 'core:about' %}">About IIC</a></li>
-            <li><a href="{% url 'events:list' %}">Events</a></li>
-            <li><a href="{% url 'council:current' %}">Council</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="footer-heading">More</h3>
-          <ul class="footer-links">
-            <li><a href="{% url 'achievements:list' %}">Achievements</a></li>
-            <li><a href="{% url 'gallery:list' %}">Gallery</a></li>
-            <li><a href="{% url 'announcements:list' %}">Announcements</a></li>
-            <li><a href="{% url 'certificates:verify' %}">Verify Certificate</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="footer-heading">Contact</h3>
-          {% if site_settings.contact_email %}
-          <p style="color:var(--color-muted);font-size:.9rem;margin-bottom:.5rem;"><i class="fas fa-envelope" style="margin-right:.5rem;color:var(--color-accent);"></i>{{ site_settings.contact_email }}</p>
-          {% endif %}
-          {% if site_settings.contact_phone %}
-          <p style="color:var(--color-muted);font-size:.9rem;margin-bottom:.5rem;"><i class="fas fa-phone" style="margin-right:.5rem;color:var(--color-accent);"></i>{{ site_settings.contact_phone }}</p>
-          {% endif %}
-          {% if site_settings.contact_address %}
-          <p style="color:var(--color-muted);font-size:.85rem;line-height:1.6;"><i class="fas fa-map-marker-alt" style="margin-right:.5rem;color:var(--color-accent);"></i>{{ site_settings.contact_address }}</p>
-          {% endif %}
-          <div style="margin-top:1.25rem;">
-            <a href="{% url 'core:contact' %}" class="btn btn-secondary btn-sm">Contact Us</a>
+          <div>
+            <div class="footer-heading">IIC Committee</div>
+            <ul class="footer-links">
+              <li><a href="{% url 'council:current' %}">Council Members List</a></li>
+              <li><a href="{% url 'core:about' %}">MoE Innovation Mandate</a></li>
+              <li><a href="{% url 'achievements:list' %}">Innovation Awards</a></li>
+              <li><a href="{% url 'certificates:verify' %}">Certificate Verification</a></li>
+              <li><a href="#">Research Advisory Committee</a></li>
+            </ul>
           </div>
+
+          <div>
+            <div class="footer-heading">News & Media</div>
+            <ul class="footer-links">
+              <li><a href="{% url 'events:list' %}">Events & Hackathons</a></li>
+              <li><a href="{% url 'announcements:list' %}">News Bulletins</a></li>
+              <li><a href="{% url 'gallery:list' %}">Photo Gallery Archive</a></li>
+              <li><a href="#">Student Startup Stories</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-heading">Important Links</div>
+            <ul class="footer-links">
+              <li><a href="{% url 'core:home' %}">IEM Portal Main Page</a></li>
+              <li><a href="{% url 'core:contact' %}">Campus Address & Map</a></li>
+              <li><a href="{% url 'users:login' %}">Admin Dashboard Login</a></li>
+              <li><a href="https://mic.gov.in" target="_blank" rel="noopener">MoE MIC Official Site</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem;display:flex;justify-content:space-between;font-size:.78rem;color:#94a3b8;">
+          <span>Institution's Innovation Council (IIC - IEM Kolkata)</span>
+          <span>Approved by Ministry of Education's Innovation Cell, Govt. of India</span>
         </div>
       </div>
 
-      <div class="footer-bottom">
-        <p>{{ site_settings.footer_text|default:"© IIC – IEM Kolkata. All Rights Reserved." }}</p>
-        <p><a href="{% url 'users:login' %}" style="color:var(--color-muted);font-size:.8rem;">Admin</a></p>
-      </div>
     </div>
   </footer>
 
-  <!-- ── Scripts ── -->
-  <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5ViYgSibmK" crossorigin="anonymous"></script>
+  <!-- Core JavaScript & HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.10" crossorigin="anonymous"></script>
   <script src="{% static 'js/main.js' %}"></script>
   {% block extra_js %}{% endblock %}
 </body>

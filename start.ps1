@@ -3,8 +3,9 @@
 
 Write-Host "=== IIC-IEM Setup & Start ===" -ForegroundColor Cyan
 
-# Step 1: Run Django migrations
-Write-Host "`n[1] Running database migrations..." -ForegroundColor Yellow
+# Step 1: Make and run Django migrations
+Write-Host "`n[1] Generating and running database migrations..." -ForegroundColor Yellow
+python manage.py makemigrations users core events certificates council achievements gallery announcements
 python manage.py migrate
 
 # Step 2: Create superuser
