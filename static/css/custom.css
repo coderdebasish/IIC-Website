@@ -571,22 +571,28 @@ tr:hover td { background: #f8fafc; }
   .footer-navy-block { padding: 1.25rem 1rem; }
   
   .footer-links-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     gap: 0.35rem;
+    width: 100%;
   }
   .footer-section {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 0.25rem;
+    width: 100%;
   }
   .footer-section:last-child {
     border-bottom: none;
   }
   .footer-accordion-btn {
-    padding: 0.85rem 0.5rem;
+    padding: 0.85rem 0.6rem;
     cursor: pointer;
     border-radius: 6px;
     transition: background 0.2s ease;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
   }
   .footer-accordion-btn:hover,
   .footer-section.active .footer-accordion-btn {
