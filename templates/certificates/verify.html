@@ -77,39 +77,62 @@
 
         const config = { fps: 10, qrbox: { width: 220, height: 220 } };
 
-        // Prefer rear camera on mobile devices
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          config,
-          (decodedText) => {
-            // Success Callback
-            let certId = decodedText;
-            if (decodedText.includes('certificate_id=')) {
-              certId = new URL(decodedText).searchParams.get('certificate_id');
-            } else if (decodedText.includes('/verify/')) {
-              certId = decodedText.split('/').pop();
-            }
-            document.getElementById('cert-id-input').value = certId;
-            stopScanner();
-            
-            // Trigger verification form submit
-            const form = document.querySelector('.verify-box form');
-            if (form) {
-              htmx.trigger(form, 'submit');
-            }
-          },
-          (errorMessage) => {
-            // Ignore frame scanning errors
+        const onScanSuccess = (decodedText) => {
+          let certId = decodedText;
+          if (decodedText.includes('certificate_id=')) {
+            certId = new URL(decodedText).searchParams.get('certificate_id');
+          } else if (decodedText.includes('/verify/')) {
+            certId = decodedText.split('/').pop();
           }
-        );
-      } catch (err) {
-        console.error("Camera Access Error:", err);
-        let msg = "Could not access camera. Please allow camera permissions in your browser settings.";
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-          msg = "Mobile browsers require a secure HTTPS connection or localhost to enable camera access. Please verify via Certificate ID input above.";
+          document.getElementById('cert-id-input').value = certId;
+          stopScanner();
+          
+          const form = document.querySelector('.verify-box form');
+          if (form) {
+            htmx.trigger(form, 'submit');
+          }
+        };
+
+        const onScanError = (errorMessage) => {
+          // ignore quiet frame scanning errors
+        };
+
+        // Tier 1: Try starting with facingMode "environment"
+        try {
+          await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, onScanError);
+        } catch (e1) {
+          console.warn("Tier 1 camera start failed, fallback to getCameras():", e1);
+
+          // Tier 2: Query camera devices explicitly using getCameras()
+          const devices = await Html5Qrcode.getCameras();
+          if (devices && devices.length > 0) {
+            // Find back camera if available, otherwise pick the last camera (usually back camera on mobile)
+            const backCamera = devices.find(d => 
+              d.label.toLowerCase().includes('back') || 
+              d.label.toLowerCase().includes('rear') || 
+              d.label.toLowerCase().includes('environment')
+            ) || devices[devices.length - 1];
+
+            await html5QrCode.start(backCamera.id, config, onScanSuccess, onScanError);
+          } else {
+            // Tier 3: Fallback to default user camera
+            await html5QrCode.start({ facingMode: "user" }, config, onScanSuccess, onScanError);
+          }
         }
+      } catch (err) {
+        console.error("Camera Access Final Error:", err);
+        let msg = "Could not access camera. Please allow camera permissions in your mobile browser settings.";
+        
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+          msg = "Mobile browsers require a secure connection (HTTPS) or localhost to enable camera access. If testing on mobile via local IP, please type your Certificate ID in the text input above.";
+        } else if (err && err.toString().includes('NotAllowedError')) {
+          msg = "Camera permission was denied. Tap the lock icon in your browser address bar to allow camera access.";
+        } else if (err && err.toString().includes('NotFoundError')) {
+          msg = "No camera hardware detected on this device.";
+        }
+        
         if (errorBox) {
-          errorBox.innerText = msg;
+          errorBox.innerHTML = `<strong><i class="fas fa-camera-slash"></i> Camera Access Issue</strong><br><span style="font-size:0.8rem;margin-top:0.25rem;display:inline-block;">${msg}</span>`;
           errorBox.style.display = 'block';
         }
       }
