@@ -418,10 +418,22 @@ tr:hover td { background: #f8fafc; }
     right: 0;
     background: #091e36;
     border-bottom: 4px solid var(--color-gold);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.75);
     padding: 0.4rem 0;
     z-index: 1000;
+    animation: slideDownNav 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+
+@keyframes slideDownNav {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   .nav-links.open li {
     width: 100%;
     display: block;

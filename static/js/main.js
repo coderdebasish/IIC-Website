@@ -25,11 +25,72 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   });
 
-  // Mobile nav toggle
+  // Mobile Navigation & Touch Gestures
   const toggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
+
+  function openMenu() {
+    if (navLinks) navLinks.classList.add('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeMenu() {
+    if (navLinks) navLinks.classList.remove('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+  }
+
   if (toggle && navLinks) {
-    toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      navLinks.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('open')) {
+        if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    });
+
+    // Close menu when tapping outside on touch devices
+    document.addEventListener('touchstart', (e) => {
+      if (navLinks.classList.contains('open')) {
+        if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+          closeMenu();
+        }
+      }
+    }, { passive: true });
+
+    // Escape key closes mobile menu
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+
+    // Touch Swipe Gestures (Swipe Up or Left to close menu)
+    let touchStartY = 0;
+    let touchStartX = 0;
+
+    navLinks.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    navLinks.addEventListener('touchend', (e) => {
+      if (!navLinks.classList.contains('open')) return;
+      const touchEndY = e.changedTouches[0].clientY;
+      const touchEndX = e.changedTouches[0].clientX;
+
+      const diffY = touchStartY - touchEndY; // Swiped Up
+      const diffX = touchStartX - touchEndX; // Swiped Left
+
+      if (diffY > 40 || Math.abs(diffX) > 60) {
+        closeMenu();
+      }
+    }, { passive: true });
   }
 
   // Mobile Footer Accordion Toggle
