@@ -37,8 +37,9 @@
 
       <!-- QR Reader Container (Hidden by default) -->
       <div id="qr-reader-wrapper" style="display:none;margin-top:1.5rem;">
-        <div id="qr-reader" style="width:100%;"></div>
-        <p style="font-size:.8rem;color:var(--color-muted);text-align:center;margin-top:.5rem;">Position the certificate QR code within the frame.</p>
+        <div id="qr-reader" style="width:100%;max-width:400px;margin:0 auto;border-radius:8px;overflow:hidden;"></div>
+        <div id="qr-error-msg" style="display:none;margin-top:0.75rem;padding:0.75rem;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;border-radius:6px;font-size:0.825rem;text-align:center;"></div>
+        <p style="font-size:.8rem;color:var(--color-muted);text-align:center;margin-top:.5rem;">Position the certificate QR code within the camera frame.</p>
       </div>
 
       <!-- HTMX Loading Spinner -->
@@ -56,41 +57,79 @@
 <!-- Html5-QRCode scanner script -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
-  let html5QrcodeScanner = null;
+  let html5QrCode = null;
 
-  function toggleQRScanner() {
+  async function toggleQRScanner() {
     const wrapper = document.getElementById('qr-reader-wrapper');
     const btn = document.getElementById('toggle-qr-btn');
+    const errorBox = document.getElementById('qr-error-msg');
+
+    if (errorBox) errorBox.style.display = 'none';
 
     if (wrapper.style.display === 'none') {
       wrapper.style.display = 'block';
       btn.innerHTML = '<i class="fas fa-times"></i> Close Camera';
 
-      html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } });
-      html5QrcodeScanner.render((decodedText) => {
-        // Handle decoded text (URL or direct ID)
-        let certId = decodedText;
-        if (decodedText.includes('certificate_id=')) {
-          certId = new URL(decodedText).searchParams.get('certificate_id');
-        } else if (decodedText.includes('/verify/')) {
-          certId = decodedText.split('/').pop();
+      try {
+        if (!html5QrCode) {
+          html5QrCode = new Html5Qrcode("qr-reader");
         }
-        document.getElementById('cert-id-input').value = certId;
-        html5QrcodeScanner.clear();
-        wrapper.style.display = 'none';
-        btn.innerHTML = '<i class="fas fa-qrcode"></i> Scan QR Code with Camera';
-        // Trigger verification
-        htmx.trigger('#cert-id-input', 'submit');
-      }, (errorMessage) => {
-        // quiet scanning errors
-      });
-    } else {
-      if (html5QrcodeScanner) {
-        html5QrcodeScanner.clear();
+
+        const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+
+        // Prefer rear camera on mobile devices
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          config,
+          (decodedText) => {
+            // Success Callback
+            let certId = decodedText;
+            if (decodedText.includes('certificate_id=')) {
+              certId = new URL(decodedText).searchParams.get('certificate_id');
+            } else if (decodedText.includes('/verify/')) {
+              certId = decodedText.split('/').pop();
+            }
+            document.getElementById('cert-id-input').value = certId;
+            stopScanner();
+            
+            // Trigger verification form submit
+            const form = document.querySelector('.verify-box form');
+            if (form) {
+              htmx.trigger(form, 'submit');
+            }
+          },
+          (errorMessage) => {
+            // Ignore frame scanning errors
+          }
+        );
+      } catch (err) {
+        console.error("Camera Access Error:", err);
+        let msg = "Could not access camera. Please allow camera permissions in your browser settings.";
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+          msg = "Mobile browsers require a secure HTTPS connection or localhost to enable camera access. Please verify via Certificate ID input above.";
+        }
+        if (errorBox) {
+          errorBox.innerText = msg;
+          errorBox.style.display = 'block';
+        }
       }
-      wrapper.style.display = 'none';
-      btn.innerHTML = '<i class="fas fa-qrcode"></i> Scan QR Code with Camera';
+    } else {
+      stopScanner();
     }
+  }
+
+  async function stopScanner() {
+    const wrapper = document.getElementById('qr-reader-wrapper');
+    const btn = document.getElementById('toggle-qr-btn');
+    if (html5QrCode && html5QrCode.isScanning) {
+      try {
+        await html5QrCode.stop();
+      } catch (e) {
+        console.error("Scanner stop error:", e);
+      }
+    }
+    wrapper.style.display = 'none';
+    btn.innerHTML = '<i class="fas fa-qrcode"></i> Scan QR Code with Camera';
   }
 </script>
 {% endblock %}

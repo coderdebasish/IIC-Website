@@ -3,11 +3,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap');
 
 :root {
-  /* Institutional Academic Color Palette */
+  /* ACTIVE THEME: Institutional Amber / Gold (Original Theme) */
+  --color-accent-theme: #d97706;             /* Institutional Gold */
+  --color-accent-theme-bright: #f59e0b;      /* Bright Amber Accent */
+  --color-accent-theme-hover: #b45309;       /* Deep Gold Hover */
+  --color-accent-theme-text: #0f172a;        /* Charcoal Contrast Text */
+
+  /* System Mappings */
   --color-primary: #0a2540;          /* Deep Navy Blue */
   --color-primary-light: #1e3a8a;    /* Royal Blue */
   --color-accent: #0284c7;           /* Sky Blue Accent */
-  --color-gold: #d97706;             /* Institutional Gold/Amber */
+  --color-gold: var(--color-accent-theme-bright); /* Reversible Accent Palette */
   --color-bg: #f8fafc;               /* Light Slate Canvas */
   --color-surface: #ffffff;          /* Crisp White Surface */
   --color-surface-2: #f1f5f9;        /* Light Gray Secondary */
@@ -193,8 +199,8 @@ img { max-width: 100%; height: auto; display: block; }
 .btn-primary:hover { background: var(--color-primary-light); border-color: var(--color-primary-light); color: white; }
 .btn-secondary { background: var(--color-surface); color: var(--color-primary); border-color: var(--color-border); }
 .btn-secondary:hover { background: var(--color-surface-2); border-color: var(--color-primary); color: var(--color-primary); }
-.btn-gold { background: var(--color-gold); color: white; border-color: var(--color-gold); }
-.btn-gold:hover { background: #b45309; color: white; }
+.btn-gold { background: var(--color-accent-theme-bright); color: var(--color-accent-theme-text); border-color: var(--color-accent-theme-bright); }
+.btn-gold:hover { background: var(--color-accent-theme-hover); border-color: var(--color-accent-theme-hover); color: white; }
 .btn-danger { background: var(--color-danger); color: white; }
 .btn-danger:hover { background: #b91c1c; color: white; }
 .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.825rem; }
@@ -386,8 +392,8 @@ tr:hover td { background: #f8fafc; }
   grid-template-columns: 300px 1fr;
 }
 .footer-gold-block {
-  background: #f59e0b;
-  color: #0f172a;
+  background: var(--color-accent-theme-bright);
+  color: var(--color-accent-theme-text);
   padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
