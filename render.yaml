@@ -2,6 +2,7 @@ services:
   - type: web
     name: iic-iem-website
     env: python
+    plan: free
     buildCommand: "./build.sh"
     startCommand: "gunicorn config.wsgi:application"
     envVars:
