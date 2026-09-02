@@ -53,53 +53,41 @@
 </div>
 {% endif %}
 
-<!-- ── Institutional Quick Navigation Pills ── -->
-<div style="background:#ffffff;border-bottom:1px solid var(--color-border-light);padding:1rem 0;">
+<!-- ── Institutional Mandate & Accreditation Bar (Clean 3-Column Academic Layout) ── -->
+<section style="background:#ffffff;padding:1.75rem 0;border-bottom:1px solid var(--color-border);box-shadow:var(--shadow-sm);">
   <div class="container">
-    <div style="display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;">
-      <a href="{% url 'core:about' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;background:#0a2540;color:white;">Why IEM UEM?</a>
-      <a href="{% url 'events:list' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">Events & Activities</a>
-      <a href="{% url 'achievements:list' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">Achievements & Rankings</a>
-      <a href="{% url 'council:current' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">IIC Committee Members</a>
-      <a href="{% url 'gallery:list' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">Photo Gallery</a>
-      <a href="{% url 'announcements:list' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">Official Bulletins</a>
-      <a href="{% url 'certificates:verify' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">Verify Certificate</a>
-      <a href="{% url 'core:contact' %}" class="btn btn-secondary btn-sm" style="border-radius:999px;">Contact & Helpdesk</a>
-    </div>
-  </div>
-</div>
-
-<!-- ── ARIIA & MoE Innovation Cell Accreditation Strip ── -->
-<section style="background:#ffffff;padding:2.25rem 0;border-bottom:1px solid var(--color-border-light);text-align:center;">
-  <div class="container">
-    <div style="display:flex;align-items:center;justify-content:space-around;gap:2rem;flex-wrap:wrap;">
-      <div style="display:flex;align-items:center;gap:1.25rem;">
-        <i class="fas fa-award" style="font-size:2.8rem;color:var(--color-gold);"></i>
-        <div style="text-align:left;">
-          <h3 style="font-size:1.15rem;font-weight:800;color:var(--color-primary);margin:0;">ARIIA RANKING APPROVED</h3>
-          <p style="font-size:.85rem;color:var(--color-muted);margin:0;">Atal Ranking of Institutions on Innovation Achievements</p>
-        </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1.75rem;align-items:center;text-align:center;">
+      
+      <!-- ARIIA Ranking -->
+      <div style="padding:.5rem 1rem;border-right:1px solid var(--color-border-light);" class="accreditation-item">
+        <h4 style="font-size:1.05rem;font-weight:800;color:var(--color-primary);margin:0 0 .2rem 0;letter-spacing:-0.01em;">
+          ARIIA INNOVATION RANKING
+        </h4>
+        <p style="font-size:.825rem;color:var(--color-muted);margin:0;font-weight:500;">
+          Atal Ranking of Institutions on Innovation Achievements
+        </p>
       </div>
 
-      <div style="height:48px;width:1px;background:var(--color-border-light);" class="desktop-only"></div>
-
-      <div style="display:flex;align-items:center;gap:1.25rem;">
-        <i class="fas fa-building-columns" style="font-size:2.8rem;color:var(--color-primary);"></i>
-        <div style="text-align:left;">
-          <h3 style="font-size:1.15rem;font-weight:800;color:var(--color-primary);margin:0;">MoE INNOVATION CELL (MIC)</h3>
-          <p style="font-size:.85rem;color:var(--color-muted);margin:0;">Ministry of Education, Government of India Initiative</p>
-        </div>
+      <!-- MoE Innovation Cell -->
+      <div style="padding:.5rem 1rem;border-right:1px solid var(--color-border-light);" class="accreditation-item">
+        <h4 style="font-size:1.05rem;font-weight:800;color:var(--color-primary);margin:0 0 .2rem 0;letter-spacing:-0.01em;">
+          MoE INNOVATION CELL (MIC)
+        </h4>
+        <p style="font-size:.825rem;color:var(--color-muted);margin:0;font-weight:500;">
+          Ministry of Education, Government of India Mandated Council
+        </p>
       </div>
 
-      <div style="height:48px;width:1px;background:var(--color-border-light);" class="desktop-only"></div>
-
-      <div style="display:flex;align-items:center;gap:1.25rem;">
-        <i class="fas fa-graduation-cap" style="font-size:2.8rem;color:var(--color-success);"></i>
-        <div style="text-align:left;">
-          <h3 style="font-size:1.15rem;font-weight:800;color:var(--color-primary);margin:0;">NAAC & NIRF RECOGNIZED</h3>
-          <p style="font-size:.85rem;color:var(--color-muted);margin:0;">Institute of Engineering & Management, Kolkata</p>
-        </div>
+      <!-- NAAC & NIRF -->
+      <div style="padding:.5rem 1rem;" class="accreditation-item">
+        <h4 style="font-size:1.05rem;font-weight:800;color:var(--color-primary);margin:0 0 .2rem 0;letter-spacing:-0.01em;">
+          NAAC & NIRF ACCREDITED
+        </h4>
+        <p style="font-size:.825rem;color:var(--color-muted);margin:0;font-weight:500;">
+          Institute of Engineering & Management (IEM), Kolkata
+        </p>
       </div>
+
     </div>
   </div>
 </section>
@@ -136,19 +124,17 @@
         </div>
       </div>
 
-      <!-- President's Message Profile Card -->
+      <!-- President / Director's Message Profile Card -->
       <div class="card" style="padding:2.25rem;border-top:5px solid var(--color-gold);box-shadow:var(--shadow-lg);background:#ffffff;">
         <div style="display:flex;gap:1.5rem;align-items:center;margin-bottom:1.5rem;">
           {% if site_settings.president_image %}
-          <img src="{{ site_settings.president_image.url }}" alt="{{ site_settings.president_name }}" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--color-gold);box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+          <img src="{{ site_settings.president_image.url }}" alt="{{ site_settings.president_name }}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--color-gold);box-shadow:0 4px 12px rgba(0,0,0,0.15);">
           {% else %}
-          <div style="width:96px;height:96px;border-radius:50%;background:var(--color-primary);display:flex;align-items:center;justify-content:center;color:white;font-size:2.5rem;border:3px solid var(--color-gold);flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,0.15);">
-            <i class="fas fa-user-tie"></i>
-          </div>
+          <img src="{% static 'images/logos/Director.jpg' %}" alt="Director Photo" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--color-gold);box-shadow:0 4px 12px rgba(0,0,0,0.15);">
           {% endif %}
           <div>
             <h3 style="font-size:1.25rem;margin-bottom:.25rem;color:var(--color-primary);">{{ site_settings.president_name|default:"Prof. Dr. Satyajit Chakrabarti" }}</h3>
-            <p style="font-size:.85rem;color:var(--color-gold);font-weight:700;">{{ site_settings.president_designation|default:"President, IIC IEM & President, IEM UEM Group" }}</p>
+            <p style="font-size:.85rem;color:var(--color-gold);font-weight:700;">{{ site_settings.president_designation|default:"Director, IEM Kolkata & President, IIC IEM" }}</p>
             <p style="font-size:.78rem;color:var(--color-muted);margin-top:.15rem;">Institute of Engineering & Management (IEM), Kolkata</p>
           </div>
         </div>

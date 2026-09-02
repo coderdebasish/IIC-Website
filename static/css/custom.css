@@ -319,8 +319,46 @@ tr:hover td { background: #f8fafc; }
 .verify-field:last-child { border-bottom: none; }
 .verify-field-label { color: var(--color-muted); min-width: 140px; flex-shrink: 0; font-weight: 600; }
 
+/* ── Footer Responsive Classes ── */
+.footer-split-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+}
+.footer-gold-block {
+  background: #f59e0b;
+  color: #0f172a;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.footer-navy-block {
+  padding: 2.5rem 3rem;
+}
+.footer-links-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.footer-compliance-bar {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
 /* ── Responsive ── */
-@media (max-width: 1024px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 1024px) {
+  .footer-split-container { grid-template-columns: 260px 1fr; }
+  .footer-navy-block { padding: 2rem; }
+  .footer-links-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
 @media (max-width: 768px) {
   .top-bar { display: none; }
   .brand-header-inner { flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
@@ -335,4 +373,15 @@ tr:hover td { background: #f8fafc; }
   .admin-content { padding: 1rem; }
   .footer-grid { grid-template-columns: 1fr; }
   .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  
+  /* Footer Mobile Stacking */
+  .footer-split-container { grid-template-columns: 1fr; }
+  .footer-gold-block { padding: 2rem 1.25rem; }
+  .footer-navy-block { padding: 1.75rem 1.25rem; }
+  .footer-links-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
+  .footer-heading { text-align: center; margin: 0 auto 0.75rem; }
+  .footer-links { align-items: center; }
+  .footer-compliance-bar { flex-direction: column; text-align: center; gap: 0.5rem; }
+  .accreditation-item { border-right: none !important; border-bottom: 1px solid var(--color-border-light); padding-bottom: 1rem !important; }
+  .accreditation-item:last-child { border-bottom: none; }
 }

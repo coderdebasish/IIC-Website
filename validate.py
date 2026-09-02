@@ -44,7 +44,16 @@ for module, package in packages.items():
 print("\n--- Django Setup ---")
 try:
     django.setup()
-    print("  [OK] Django configured")
+    import shutil
+    logo_src = os.path.join(os.path.dirname(__file__), 'Logo')
+    dest_dir = os.path.join(os.path.dirname(__file__), 'static', 'images', 'logos')
+    os.makedirs(dest_dir, exist_ok=True)
+    if os.path.exists(logo_src):
+        for item in os.listdir(logo_src):
+            src_file = os.path.join(logo_src, item)
+            if os.path.isfile(src_file):
+                shutil.copy(src_file, os.path.join(dest_dir, item))
+    print("  [OK] Django configured & logos synced:", os.listdir(dest_dir))
 except Exception as e:
     errors.append(f"Django setup failed: {e}")
     print(f"  [ERROR] Django setup: {e}")
