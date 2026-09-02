@@ -151,6 +151,60 @@ class SiteSettings(models.Model):
         help_text=_('JSON array of {label, url} objects for footer quick links.'),
     )
 
+    # ── Impact Statistics Metrics ─────────────────────────────────────────────
+    stat_1_number = models.CharField(
+        _('stat 1 number/value'),
+        max_length=50,
+        default='120+',
+        blank=True,
+        help_text=_('e.g. "120+"'),
+    )
+    stat_1_label = models.CharField(
+        _('stat 1 description'),
+        max_length=150,
+        default='Innovation Workshops & Hackathons',
+        blank=True,
+    )
+    stat_2_number = models.CharField(
+        _('stat 2 number/value'),
+        max_length=50,
+        default='45+',
+        blank=True,
+        help_text=_('e.g. "45+"'),
+    )
+    stat_2_label = models.CharField(
+        _('stat 2 description'),
+        max_length=150,
+        default='Student Startups Mentored',
+        blank=True,
+    )
+    stat_3_number = models.CharField(
+        _('stat 3 number/value'),
+        max_length=50,
+        default='30+',
+        blank=True,
+        help_text=_('e.g. "30+"'),
+    )
+    stat_3_label = models.CharField(
+        _('stat 3 description'),
+        max_length=150,
+        default='Patents & Copyrights Filed',
+        blank=True,
+    )
+    stat_4_number = models.CharField(
+        _('stat 4 number/value'),
+        max_length=50,
+        default='₹2.5 Cr+',
+        blank=True,
+        help_text=_('e.g. "₹2.5 Cr+"'),
+    )
+    stat_4_label = models.CharField(
+        _('stat 4 description'),
+        max_length=150,
+        default='Grant Exposure & Funding Support',
+        blank=True,
+    )
+
     # ── SEO ───────────────────────────────────────────────────────────────────
     meta_description = models.TextField(
         _('default meta description'),
