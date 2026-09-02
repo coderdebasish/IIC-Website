@@ -14,7 +14,7 @@ class CoreConfig(AppConfig):
     verbose_name = 'Core / Site Settings'
 
     def ready(self):
-        """Auto-sync logos from project Logo/ folder to static/images/logos/ on app ready."""
+        """Auto-sync logos and seed default Council Academic Years on app ready."""
         try:
             base_dir = settings.BASE_DIR
             logo_src = os.path.join(base_dir, 'Logo')
@@ -25,5 +25,12 @@ class CoreConfig(AppConfig):
                     src_file = os.path.join(logo_src, item)
                     if os.path.isfile(src_file):
                         shutil.copy(src_file, os.path.join(dest_dir, item))
+
+            # Auto-seed Council Years if missing
+            from apps.council.models import CouncilYear
+            if not CouncilYear.objects.exists():
+                CouncilYear.objects.create(year_label='2025-2026', is_current=True, description='Academic Session 2025-2026')
+                CouncilYear.objects.create(year_label='2024-2025', is_current=False, description='Academic Session 2024-2025')
+                CouncilYear.objects.create(year_label='2023-2024', is_current=False, description='Academic Session 2023-2024')
         except Exception:
             pass

@@ -442,8 +442,8 @@ tr:hover td { background: #f8fafc; }
   animation: spin-reverse 0.9s linear infinite;
 }
 .preloader-badge {
-  width: 72px;
-  height: 72px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   background: #ffffff;
   display: flex;

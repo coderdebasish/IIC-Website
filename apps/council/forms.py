@@ -15,6 +15,22 @@ class CouncilYearForm(forms.ModelForm):
 
 
 class CouncilMemberForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Ensure default academic years exist if database is empty
+        if not CouncilYear.objects.exists():
+            CouncilYear.objects.get_or_create(year_label='2025-2026', defaults={'is_current': True, 'description': 'Academic Session 2025-2026'})
+            CouncilYear.objects.get_or_create(year_label='2024-2025', defaults={'is_current': False, 'description': 'Academic Session 2024-2025'})
+            CouncilYear.objects.get_or_create(year_label='2023-2024', defaults={'is_current': False, 'description': 'Academic Session 2023-2024'})
+        
+        self.fields['council_year'].queryset = CouncilYear.objects.order_by('-year_label')
+        
+        # Set default initial selection to current academic year for new member forms
+        if not self.instance.pk and 'council_year' in self.fields:
+            current_yr = CouncilYear.objects.filter(is_current=True).first() or CouncilYear.objects.first()
+            if current_yr:
+                self.fields['council_year'].initial = current_yr.pk
+
     class Meta:
         model = CouncilMember
         fields = ['council_year', 'name', 'role', 'designation', 'member_type', 'photo', 'email', 'linkedin_url', 'order_no', 'is_active']
