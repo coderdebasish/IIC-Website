@@ -32,6 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
   }
 
+  // Mobile Footer Accordion Toggle
+  document.querySelectorAll('.footer-accordion-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        const section = btn.closest('.footer-section');
+        if (section) {
+          section.classList.toggle('active');
+        }
+      }
+    });
+  });
+
   // Active nav link highlighting
   const currentPath = window.location.pathname;
   document.querySelectorAll('.nav-links a').forEach(link => {

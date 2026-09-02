@@ -197,9 +197,12 @@
       <!-- Right Navy Columns (Matches IEM.edu.in Portal Columns) -->
       <div class="footer-navy-block">
         <div class="footer-links-grid">
-          <div>
-            <div class="footer-heading">Compliances</div>
-            <ul class="footer-links">
+          <div class="footer-section">
+            <button class="footer-heading footer-accordion-btn" type="button">
+              <span>Compliances</span>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </button>
+            <ul class="footer-links footer-accordion-content">
               <li><a href="#">NIRF Ranking</a></li>
               <li><a href="#">NAAC SSR Documentation</a></li>
               <li><a href="#">Audit Statements</a></li>
@@ -209,9 +212,12 @@
             </ul>
           </div>
 
-          <div>
-            <div class="footer-heading">IIC Committee</div>
-            <ul class="footer-links">
+          <div class="footer-section">
+            <button class="footer-heading footer-accordion-btn" type="button">
+              <span>IIC Committee</span>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </button>
+            <ul class="footer-links footer-accordion-content">
               <li><a href="{% url 'council:current' %}">Council Members List</a></li>
               <li><a href="{% url 'core:about' %}">MoE Innovation Mandate</a></li>
               <li><a href="{% url 'achievements:list' %}">Innovation Awards</a></li>
@@ -220,9 +226,12 @@
             </ul>
           </div>
 
-          <div>
-            <div class="footer-heading">News & Media</div>
-            <ul class="footer-links">
+          <div class="footer-section">
+            <button class="footer-heading footer-accordion-btn" type="button">
+              <span>News & Media</span>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </button>
+            <ul class="footer-links footer-accordion-content">
               <li><a href="{% url 'events:list' %}">Events & Hackathons</a></li>
               <li><a href="{% url 'announcements:list' %}">News Bulletins</a></li>
               <li><a href="{% url 'gallery:list' %}">Photo Gallery Archive</a></li>
@@ -230,9 +239,12 @@
             </ul>
           </div>
 
-          <div>
-            <div class="footer-heading">Important Links</div>
-            <ul class="footer-links">
+          <div class="footer-section">
+            <button class="footer-heading footer-accordion-btn" type="button">
+              <span>Important Links</span>
+              <i class="fas fa-chevron-down accordion-icon"></i>
+            </button>
+            <ul class="footer-links footer-accordion-content">
               <li><a href="{% url 'core:home' %}">IEM Portal Main Page</a></li>
               <li><a href="{% url 'core:contact' %}">Campus Address & Map</a></li>
               <li><a href="{% url 'users:login' %}">Admin Dashboard Login</a></li>
